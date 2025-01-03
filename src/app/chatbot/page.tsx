@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-
 import * as React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { 
-  Paperclip, 
-  Send, 
-  FileIcon, 
-  ImageIcon, 
-  X, 
-  Loader2, 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Paperclip,
+  Send,
+  FileIcon,
+  ImageIcon,
+  X,
   RotateCcw,
   Bot,
-  User
+  User,
+  Search,
+  Smile,
+  ChevronDown,
+  Sparkles
 } from 'lucide-react'
+import EmojiPickerComponent from './EmojiPickerComponent'
 
 interface Message {
   id: string
@@ -24,84 +27,88 @@ interface Message {
   files?: File[]
 }
 
-export default function Chat() {
+interface AIPrompt {
+  text: string
+  action: string
+}
+
+const ChatComponent = () => {
   const [messages, setMessages] = React.useState<Message[]>([])
   const [input, setInput] = React.useState('')
   const [files, setFiles] = React.useState<File[]>([])
   const [isAnalyzing, setIsAnalyzing] = React.useState(false)
   const [isTyping, setIsTyping] = React.useState(false)
-  
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const [showScrollButton, setShowScrollButton] = React.useState(false)
+  const [typingText, setTypingText] = React.useState('')
+
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const chatContainerRef = React.useRef<HTMLDivElement>(null)
 
-  // Memoized message loading
-  const loadMessages = React.useCallback(() => {
-    try {
-      const storedMessages = localStorage.getItem('chatMessages')
-      if (storedMessages) {
-        setMessages(JSON.parse(storedMessages))
-      }
-    } catch (error) {
-      console.error('Error loading messages:', error)
-    }
-  }, [])
+  const aiPrompts: AIPrompt[] = [
+    { text: "Help me brainstorm", action: "Let's brainstorm some ideas together." },
+    { text: "Explain this", action: "I'd be happy to explain. What's your question?" },
+    { text: "Write a message", action: "I can help compose a message." },
+    { text: "Analyze data", action: "I can help analyze your data." }
+  ]
 
-  // Load messages on mount
-  React.useEffect(() => {
-    loadMessages()
-  }, [loadMessages])
-
-  // Save messages with debounce
-  React.useEffect(() => {
-    const saveTimeout = setTimeout(() => {
-      try {
-        localStorage.setItem('chatMessages', JSON.stringify(messages))
-      } catch (error) {
-        console.error('Error saving messages:', error)
-      }
-    }, 500)
-    return () => clearTimeout(saveTimeout)
-  }, [messages])
-
-  // Auto scroll to bottom when new messages arrive
-  React.useEffect(() => {
+  const handleScroll = React.useCallback(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current
+      setShowScrollButton(scrollHeight - scrollTop - clientHeight > 100)
     }
-  }, [messages])
-
-  // Simulated typing effect
-  const simulateTyping = React.useCallback(async (text: string) => {
-    setIsTyping(true)
-    let displayText = ''
-    const newAssistantMessage: Message = {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: '',
-      timestamp: Date.now()
-    }
-    
-    setMessages(prev => [...prev, newAssistantMessage])
-    
-    for (let i = 0; i < text.length; i++) {
-      displayText += text[i]
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === newAssistantMessage.id 
-            ? { ...msg, content: displayText }
-            : msg
-        )
-      )
-      await new Promise(resolve => setTimeout(resolve, 30))
-    }
-    setIsTyping(false)
   }, [])
+
+  const scrollToBottom = React.useCallback(() => {
+    chatContainerRef.current?.scrollTo({
+      top: chatContainerRef.current.scrollHeight,
+      behavior: 'smooth'
+    })
+  }, [])
+
+  React.useEffect(() => {
+    const chatContainer = chatContainerRef.current
+    if (chatContainer) {
+      chatContainer.addEventListener('scroll', handleScroll)
+      return () => chatContainer.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
+
+  React.useEffect(() => {
+    if (!showScrollButton) {
+      scrollToBottom()
+    }
+  }, [messages, showScrollButton, scrollToBottom])
+
+  const simulateTyping = async (text: string) => {
+    setIsTyping(true)
+    let currentText = ''
+
+    for (let i = 0; i < text.length; i++) {
+      currentText += text[i]
+      setTypingText(currentText)
+      // Random delay between 20-50ms for more natural typing
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 30 + 20))
+    }
+
+    setIsTyping(false)
+    setTypingText('')
+    return currentText
+  }
+
+  const filteredMessages = React.useMemo(() => {
+    if (!searchQuery) return messages
+    const query = searchQuery.toLowerCase()
+    return messages.filter(message =>
+      message.content.toLowerCase().includes(query)
+    )
+  }, [messages, searchQuery])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() && files.length === 0) return
 
-    const newUserMessage: Message = {
+    const newMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
       content: input,
@@ -109,43 +116,33 @@ export default function Chat() {
       files: files.length > 0 ? files : undefined
     }
 
-    setMessages(prev => [...prev, newUserMessage])
+    setMessages(prev => [...prev, newMessage])
     setInput('')
     setFiles([])
     setIsAnalyzing(true)
 
-    // Simulate response generation
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const responseText = `I understand your message${files.length ? ' and received your files' : ''}. How else can I help?`
+    const typedText = await simulateTyping(responseText)
 
-    const response = `I've analyzed your message${files.length ? ' and attachments' : ''}. ${
-      generateResponse(input)
-    }`
-
+    const response: Message = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: typedText,
+      timestamp: Date.now()
+    }
+    setMessages(prev => [...prev, response])
     setIsAnalyzing(false)
-    simulateTyping(response)
-  }
-
-  const generateResponse = (userInput: string): string => {
-    const responses = [
-      "That's an interesting point! Could you tell me more?",
-      "I understand what you're saying. Here's what I think...",
-      "Based on your input, I'd suggest...",
-      "Let me analyze that for you...",
-      "I'm processing your request. Here's what I found..."
-    ]
-    return responses[Math.floor(Math.random() * responses.length)]
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files)
-      // Limit total file size to 10MB
       const totalSize = newFiles.reduce((sum, file) => sum + file.size, 0)
       if (totalSize > 10 * 1024 * 1024) {
         alert('Total file size exceeds 10MB limit')
         return
       }
-      setFiles(prevFiles => [...prevFiles, ...newFiles])
+      setFiles(prev => [...prev, ...newFiles])
     }
   }
 
@@ -154,131 +151,161 @@ export default function Chat() {
   }
 
   const clearChat = () => {
-    if (window.confirm('Are you sure you want to clear the chat history?')) {
+    if (window.confirm('Clear chat history?')) {
       setMessages([])
-      localStorage.removeItem('chatMessages')
     }
   }
 
-  const formatTimestamp = (timestamp: number) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+  const handleEmojiSelect = (emojiData: { emoji: string }) => {
+    setInput(prev => prev + emojiData.emoji)
+  }
+
+  const formatTime = (timestamp: number) => {
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
     })
   }
 
   return (
-    <div className="w-full h-[calc(100vh-5rem)] bg-indigo-500"> {/* Adjust 4rem based on your navbar height */}
+    <main className="w-full h-[calc(100vh-4rem)]">
       <div className="max-w-3xl mx-auto h-full flex flex-col bg-background">
-        {/* Fixed Header */}
-        <div className="flex justify-between items-center px-4 py-2 border-b bg-card">
+        <header className="flex justify-between items-center px-4 py-2 border-b bg-card">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
             <h2 className="text-base font-medium">Chat Assistant</h2>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={clearChat}
-            className="h-8 w-8"
-          >
-            <RotateCcw className="h-4 w-4" />
-          </Button>
-        </div>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="h-4 w-4 absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+                className="pl-8 h-8 w-[200px] text-sm"
+              />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={clearChat}
+              className="h-8 w-8"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </Button>
+          </div>
+        </header>
 
-        {/* Scrollable Chat Area */}
-        <div 
+        <div
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto px-4 py-4 space-y-4"
+          className="flex-1 overflow-y-auto px-4 py-4 space-y-4 relative scroll-smooth"
         >
-          {messages.length === 0 ? (
+          {filteredMessages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <Bot className="h-12 w-12 text-muted-foreground mb-4" />
               <h1 className="text-xl font-medium mb-2">How can I help you today?</h1>
               <p className="text-sm text-muted-foreground">Ask me anything...</p>
+
+              <div className="mt-6 grid grid-cols-2 gap-2 w-full max-w-md">
+                {aiPrompts.map((prompt, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="text-sm justify-start"
+                    onClick={() => setInput(prompt.action)}
+                  >
+                    <Sparkles className="h-3 w-3 mr-2" />
+                    {prompt.text}
+                  </Button>
+                ))}
+              </div>
             </div>
           ) : (
-            messages.map((message) => (
-              <div 
-                key={message.id} 
-                className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`flex gap-2 max-w-[85%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    {message.role === 'user' ? (
-                      <User className="h-4 w-4 text-primary" />
-                    ) : (
-                      <Bot className="h-4 w-4 text-primary" />
-                    )}
-                  </div>
-                  <div 
-                    className={`rounded-lg px-3 py-2 ${
-                      message.role === 'user' 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'bg-muted'
-                    }`}
-                  >
-                    <div className="flex justify-between items-start gap-2">
-                      <span className="text-xs font-medium">
-                        {message.role === 'user' ? 'You' : 'Assistant'}
-                      </span>
-                      <span className="text-xs opacity-50">
-                        {formatTimestamp(message.timestamp)}
-                      </span>
+            <>
+              {filteredMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`flex gap-2 max-w-[85%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      {message.role === 'user' ? (
+                        <User className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Bot className="h-4 w-4 text-primary" />
+                      )}
                     </div>
-                    <p className="text-sm mt-1 whitespace-pre-wrap break-words">{message.content}</p>
-                    
-                    {message.files && message.files.length > 0 && (
-                      <div className="mt-2 space-y-1">
-                        {message.files.map((file, i) => (
-                          <div key={i} className="flex items-center gap-2 text-xs">
-                            {file.type.startsWith('image/') ? (
-                              <ImageIcon className="h-3 w-3" />
-                            ) : (
-                              <FileIcon className="h-3 w-3" />
-                            )}
-                            <span className="truncate">{file.name}</span>
-                          </div>
-                        ))}
+                    <div
+                      className={`rounded-lg px-3 py-2 ${
+                        message.role === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-xs font-medium">
+                          {message.role === 'user' ? 'You' : 'Assistant'}
+                        </span>
+                        <span className="text-xs opacity-50">
+                          {formatTime(message.timestamp)}
+                        </span>
                       </div>
-                    )}
+                      <p className="text-sm whitespace-pre-wrap break-words break-all">{message.content}</p>
+
+                      {(message.files?.length ?? 0) > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {message.files?.map((file, i) => (
+                            <div key={i} className="flex items-center gap-2 text-xs">
+                              {file.type.startsWith('image/') ? (
+                                <ImageIcon className="h-3 w-3" />
+                              ) : (
+                                <FileIcon className="h-3 w-3" />
+                              )}
+                              <span className="truncate max-w-[150px]">{file.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              ))}
+              {isTyping && (
+                <div className="flex gap-3">
+                  <div className="flex gap-2 max-w-[85%]">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Bot className="h-4 w-4 text-primary" />
+                    </div>
+                    <div className="rounded-lg px-3 py-2 bg-muted">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-xs font-medium">Assistant</span>
+                        <span className="text-xs opacity-50">{formatTime(Date.now())}</span>
+                      </div>
+                      <p className="text-sm whitespace-pre-wrap break-words">
+                        {typingText}<span className="animate-pulse">▋</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
-          {(isAnalyzing || isTyping) && (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-sm">{isAnalyzing ? 'Analyzing...' : 'Typing...'}</span>
+
+          {showScrollButton && (
+            <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full shadow-lg"
+                onClick={scrollToBottom}
+              >
+                <ChevronDown className="h-4 w-4" />
+              </Button>
             </div>
           )}
         </div>
 
-        {/* Fixed Input Area */}
-        <div className="p-4 border-t bg-card">
-          {files.length > 0 && (
-            <div className="mb-4 p-2 border rounded-lg bg-muted/50">
-              <div className="text-xs font-medium mb-1">
-                Attachments ({files.length}):
-              </div>
-              {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between gap-2 text-sm">
-                  <span className="truncate text-xs">{file.name}</span>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => removeFile(i)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-          
+        <footer className="p-4 border-t bg-card">
           <form onSubmit={handleSubmit} className="flex gap-2">
             <input
               type="file"
@@ -298,21 +325,40 @@ export default function Chat() {
             >
               <Paperclip className="h-4 w-4" />
             </Button>
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 text-sm"
-              disabled={isAnalyzing || isTyping}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSubmit(e)
-                }
-              }}
-            />
-            <Button 
-              type="submit" 
+
+            <div className="flex-1 flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type your message..."
+                className="flex-1 text-sm"
+                disabled={isAnalyzing || isTyping}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSubmit(e)
+                  }
+                }}
+              />
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="flex-shrink-0"
+                  >
+                    <Smile className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="p-0 border-none">
+                  <EmojiPickerComponent onEmojiClick={handleEmojiSelect} />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <Button
+              type="submit"
               size="icon"
               disabled={isAnalyzing || isTyping || (!input.trim() && files.length === 0)}
               className="flex-shrink-0"
@@ -320,8 +366,47 @@ export default function Chat() {
               <Send className="h-4 w-4" />
             </Button>
           </form>
-        </div>
+
+          {files.length > 0 && (
+            <div className="mt-4 p-2 border rounded-lg bg-muted/50">
+              <div className="text-xs font-medium mb-2">
+                Attachments ({files.length}):
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {files.map((file, i) => (
+                  <div key={i} className="relative group">
+                    {file.type.startsWith('image/') ? (
+                      <div className="w-16 h-16 rounded border overflow-hidden">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 p-2 border rounded bg-background">
+                        <FileIcon className="h-4 w-4" />
+                        <span className="text-xs truncate max-w-[100px]">{file.name}</span>
+                      </div>
+                    )}
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      className="h-5 w-5 absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => removeFile(i)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </footer>
       </div>
-    </div>
+    </main>
   )
 }
+
+export default ChatComponent
