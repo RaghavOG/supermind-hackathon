@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import * as React from 'react'
 import { Button } from "@/components/ui/button"
@@ -33,7 +34,10 @@ interface AIPrompt {
 }
 
 const ChatComponent = () => {
-  const [messages, setMessages] = React.useState<Message[]>([])
+  const [messages, setMessages] = React.useState<Message[]>(() => {
+    const savedMessages = localStorage.getItem('chatMessages')
+    return savedMessages ? JSON.parse(savedMessages) : []
+  })
   const [input, setInput] = React.useState('')
   const [files, setFiles] = React.useState<File[]>([])
   const [isAnalyzing, setIsAnalyzing] = React.useState(false)
@@ -79,6 +83,10 @@ const ChatComponent = () => {
       scrollToBottom()
     }
   }, [messages, showScrollButton, scrollToBottom])
+
+  React.useEffect(() => {
+    localStorage.setItem('chatMessages', JSON.stringify(messages))
+  }, [messages])
 
   const simulateTyping = async (text: string) => {
     setIsTyping(true)
@@ -153,6 +161,7 @@ const ChatComponent = () => {
   const clearChat = () => {
     if (window.confirm('Clear chat history?')) {
       setMessages([])
+      localStorage.removeItem('chatMessages')
     }
   }
 
