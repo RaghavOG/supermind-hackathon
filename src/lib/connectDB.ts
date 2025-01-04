@@ -1,11 +1,11 @@
 import { DataAPIClient, Db } from "@datastax/astra-db-ts";
 
 export function connectToDatabase(): Db {
-  // *-*-*-*-*-Raghav's Astra DB credentials-*-*-*-*-*
-  const { ASTRA_DB_API_ENDPOINT: endpoint, ASTRA_DB_APPLICATION_TOKEN: token } = process.env;
+  // // *-*-*-*-*-Raghav's Astra DB credentials-*-*-*-*-*
+  // const { ASTRA_DB_API_ENDPOINT: endpoint, ASTRA_DB_APPLICATION_TOKEN: token } = process.env;
 
   //  *-*-*-*-*-Abhishek's Astra DB credentials-*-*-*-*-*
-  // const { ABHISHEK_ASTRA_DB_API_ENDPOINT: endpoint, ABHISHEK_ASTRA_DB_APPLICATION_TOKEN: token } = process.env;
+  const { ABHISHEK_ASTRA_DB_API_ENDPOINT: endpoint, ABHISHEK_ASTRA_DB_APPLICATION_TOKEN: token } = process.env;
 
   if (!token || !endpoint) {
     throw new Error(

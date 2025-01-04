@@ -24,12 +24,9 @@ export async function GET() {
   const database = connectToDatabase();
 
   try {
-    const collection = database.collection("instagram_data");
-    console.log("*******************Collection*******************")
-    console.log(collection);
+    const collection = database.collection("sm_posts");
 
     const data = await collection.find({}).limit(1000).toArray();
-
     console.log(`Fetched ${data.length} documents from Astra DB`);
     console.log("Data fetched Successfully");
     return NextResponse.json({ data });
