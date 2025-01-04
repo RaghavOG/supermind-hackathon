@@ -1,13 +1,5 @@
 'use client'
-/***
- * API ROUTE /api/pullData
- * 
- * this is fetching from New Data Provided by Abhishek
- * 
- * 
- * 
- * 
- */
+
 import { useEffect, useState } from "react"
 import { 
   Table, 
@@ -19,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from "framer-motion"
 
 export interface DataItem {
   _id: string
@@ -38,7 +31,7 @@ export interface DataItem {
 
 const ITEMS_PER_PAGE = 10
 
-export default function Page() {
+export default function EnhancedEngagementMetrics() {
   const [allData, setAllData] = useState<DataItem[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
@@ -80,76 +73,102 @@ export default function Page() {
   }
 
   return (
-    <div className="p-4 min-h-screen bg-black text-gray-100 ">
-      <h1 className="text-2xl font-bold mb-4">Engagement Metrics</h1>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="p-4 min-h-screen bg-black text-gray-100"
+    >
+      <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
+        Engagement Metrics
+      </h1>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
+          <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
         </div>
       ) : (
-        <>
-          <div className="max-w-7xl mx-auto px-4">
-          <div className="rounded-md border border-gray-700 ">
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-7xl mx-auto px-4"
+        >
+          <div className="rounded-lg border border-blue-500 shadow-lg shadow-blue-500/50 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-b border-gray-700">
-                  <TableHead className="text-gray-300">Post ID</TableHead>
-                  <TableHead className="text-gray-300">Post Type</TableHead>
-                  <TableHead className="text-gray-300">Likes</TableHead>
-                  <TableHead className="text-gray-300">Shares</TableHead>
-                  <TableHead className="text-gray-300">Comments</TableHead>
-                  <TableHead className="text-gray-300">Saves</TableHead>
-                  <TableHead className="text-gray-300">Impressions</TableHead>
-                  <TableHead className="text-gray-300">Reach</TableHead>
-                  <TableHead className="text-gray-300">Profile Visits</TableHead>
-                  <TableHead className="text-gray-300">Follower Count</TableHead>
-                  <TableHead className="text-gray-300">Date Posted</TableHead>
-                  <TableHead className="text-gray-300">Engagement Rate</TableHead>
+                <TableRow className="bg-gray-900 border-b border-blue-500">
+                  <TableHead className="text-blue-300">Post ID</TableHead>
+                  <TableHead className="text-blue-300">Post Type</TableHead>
+                  <TableHead className="text-blue-300">Likes</TableHead>
+                  <TableHead className="text-blue-300">Shares</TableHead>
+                  <TableHead className="text-blue-300">Comments</TableHead>
+                  <TableHead className="text-blue-300">Saves</TableHead>
+                  <TableHead className="text-blue-300">Impressions</TableHead>
+                  <TableHead className="text-blue-300">Reach</TableHead>
+                  <TableHead className="text-blue-300">Profile Visits</TableHead>
+                  <TableHead className="text-blue-300">Follower Count</TableHead>
+                  <TableHead className="text-blue-300">Date Posted</TableHead>
+                  <TableHead className="text-blue-300">Engagement Rate</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {getCurrentPageData().map((item) => (
-                  <TableRow key={item.post_id} className="border-b border-gray-800">
-                    <TableCell className="font-medium">{item.post_id}</TableCell>
-                    <TableCell>{item.post_type}</TableCell>
-                    <TableCell>{item.likes}</TableCell>
-                    <TableCell>{item.shares}</TableCell>
-                    <TableCell>{item.comments}</TableCell>
-                    <TableCell>{item.saves}</TableCell>
-                    <TableCell>{item.impressions}</TableCell>
-                    <TableCell>{item.reach}</TableCell>
-                    <TableCell>{item.profile_visits}</TableCell>
-                    <TableCell>{item.follower_count}</TableCell>
-                    <TableCell>{item.date_posted}</TableCell>
-                    <TableCell>{item['engagement-rate']}</TableCell>
-                  </TableRow>
-                ))}
+                <AnimatePresence>
+                  {getCurrentPageData().map((item, index) => (
+                    <motion.tr
+                      key={item.post_id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="border-b border-blue-500/30 hover:bg-blue-500/10 transition-colors duration-200"
+                    >
+                      <TableCell className="font-medium text-purple-300">{item.post_id}</TableCell>
+                      <TableCell>{item.post_type}</TableCell>
+                      <TableCell>{item.likes}</TableCell>
+                      <TableCell>{item.shares}</TableCell>
+                      <TableCell>{item.comments}</TableCell>
+                      <TableCell>{item.saves}</TableCell>
+                      <TableCell>{item.impressions}</TableCell>
+                      <TableCell>{item.reach}</TableCell>
+                      <TableCell>{item.profile_visits}</TableCell>
+                      <TableCell>{item.follower_count}</TableCell>
+                      <TableCell>{item.date_posted}</TableCell>
+                      <TableCell>{item['engagement-rate']}</TableCell>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
               </TableBody>
             </Table>
           </div>
-          <div className="flex justify-between mt-4">
+          <motion.div 
+            className="flex justify-between mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             <Button 
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               variant="outline"
-              className="bg-gray-800 text-gray-100 hover:bg-gray-700"
+              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </Button>
-            <span className="text-gray-300">Page {currentPage} of {totalPages}</span>
+            <span className="text-blue-300 text-lg font-semibold">
+              Page {currentPage} of {totalPages}
+            </span>
             <Button 
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               variant="outline"
-              className="bg-gray-800 text-gray-100 hover:bg-gray-700"
+              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </Button>
-          </div>
-          </div>
-        </>
+          </motion.div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
