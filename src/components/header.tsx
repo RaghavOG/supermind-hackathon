@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Home, Info, MessageCircle, Menu, X } from 'lucide-react'
+import { Home, MessageCircle, Menu, X } from 'lucide-react'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,7 +12,6 @@ export default function Header() {
 
   const navItems = [
     { href: '/', label: 'Home', icon: Home },
-    { href: '/about', label: 'About', icon: Info },
     { href: '/chatbot', label: 'Chat', icon: MessageCircle },
   ]
 
@@ -34,7 +33,6 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
           <Button variant="ghost" className="md:hidden" onClick={toggleMenu}>
             {isMenuOpen ? <X /> : <Menu />}
           </Button>
