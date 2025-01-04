@@ -6,8 +6,9 @@ export async function GET() {
 
   try {
     const collection = database.collection("hackathon");
+    console.log("*******************Collection*******************")
+    console.log(collection);
 
-    console.log("Fetching 500 documents from Astra DB");
     const data = await collection.find({}).limit(1000).toArray();
 
     console.log(`Fetched ${data.length} documents from Astra DB`);

@@ -18,21 +18,32 @@ import { EngagementScore } from '@/components/EngagementScoreBubble';
 export default function Dashboard() {
     const [data, setData] = useState<DataItem[]>([]);
     const [processedData, setProcessedData] = useState<any>(null);
-  
+
+
     useEffect(() => {
-      const fetchData = async () => {
-        const response = await fetch('/api/getData');
-        const result = await response.json();
-        if (response.ok) {
-          setData(result.data);
-          setProcessedData(processData(result.data));
-        } else {
-          console.error(result.error);
-        }
-      };
+        const fetchData = async () => {
+          const storedData = localStorage.getItem('engagementData');
+          if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            setData(parsedData);
+            setProcessedData(processData(parsedData));
+            
+          } else {
+            const response = await fetch('/api/getData');
+            const result = await response.json();
+            if (response.ok) {
+              localStorage.setItem('engagementData', JSON.stringify(result.data));
+              setData(result.data)
+              setProcessedData(processData(result.data));
+            } else {
+              console.error(result.error);
+            }
+          }
+        };
+    
+        fetchData();
+      }, []);
   
-      fetchData();
-    }, []);
   
     if (!processedData) {
       return <div>Loading...</div>;
