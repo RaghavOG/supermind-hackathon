@@ -178,7 +178,7 @@ const ChatComponent = () => {
 
   return (
     <main className="w-full h-[calc(100vh-4rem)]">
-      <div className="max-w-3xl mx-auto h-full flex flex-col bg-background">
+      <div className="max-w-3xl mx-auto h-full flex flex-col bg-background border border-black p-3 rounded-md my-5">
         <header className="flex justify-between items-center px-4 py-2 border-b bg-card">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
