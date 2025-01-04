@@ -1,23 +1,30 @@
+import {  NextResponse } from "next/server";
+import { connectToDatabase } from "@/lib/connectDB";
+
 /***
- * This route is for Raghav's Astra DB credentials Hackathon Database Name 
+ * This route is for ABHISHEK ( RAGHAV )'s Astra DB credentials instagram_data Database Name 
  * with data in below format
  *  _id: string;
-    id: string;
+    post_id: string;
     post_type: string;
     likes: string;
     shares: string;
     comments: string;
     created_at: string;
+    impressions: string;
+    reach: string;
+    profile_visits: string;
+    follower_count: string;
+    date_posted: string;
+    engagement_rate: string;
  * 
  */
-import {  NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/connectDB";
 
 export async function GET() {
   const database = connectToDatabase();
 
   try {
-    const collection = database.collection("hackathon");
+    const collection = database.collection("instagram_data");
     console.log("*******************Collection*******************")
     console.log(collection);
 
