@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
+
+import { motion } from 'framer-motion'
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -6,9 +10,9 @@ import {
   Filler,
   Tooltip,
   Legend
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from 'chart.js'
+import { Radar } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 ChartJS.register(
   RadialLinearScale,
@@ -17,27 +21,27 @@ ChartJS.register(
   Filler,
   Tooltip,
   Legend
-);
+)
 
 interface PostTypeRadarProps {
   engagementByType: Array<{
-    type: string;
-    avgLikes: number;
-    avgShares: number;
-    avgComments: number;
-    avgSaves: number;
-    avgImpressions: number;
-    avgReach: number;
-    avgEngagementRate: number;
-  }>;
+    type: string
+    avgLikes: number
+    avgShares: number
+    avgComments: number
+    avgSaves: number
+    avgImpressions: number
+    avgReach: number
+    avgEngagementRate: number
+  }>
 }
 
 export function PostTypeRadar({ engagementByType }: PostTypeRadarProps) {
   // Normalize values for better radar visualization
   const normalizeValues = (values: number[]) => {
-    const max = Math.max(...values);
-    return values.map(v => (v / max) * 100);
-  };
+    const max = Math.max(...values)
+    return values.map(v => (v / max) * 100)
+  }
 
   const data = {
     labels: engagementByType.map(item => item.type),
@@ -64,7 +68,7 @@ export function PostTypeRadar({ engagementByType }: PostTypeRadarProps) {
         borderWidth: 2,
       }
     ]
-  };
+  }
 
   const options = {
     responsive: true,
@@ -73,7 +77,13 @@ export function PostTypeRadar({ engagementByType }: PostTypeRadarProps) {
       r: {
         beginAtZero: true,
         ticks: {
-          callback: (value: number) => `${value.toFixed(0)}%`
+          callback: function (tickValue: string | number) {
+            return `${Number(tickValue).toFixed(0)}%`;
+          },
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       }
     },
@@ -81,35 +91,50 @@ export function PostTypeRadar({ engagementByType }: PostTypeRadarProps) {
       tooltip: {
         callbacks: {
           label: (context: any) => {
-            const label = context.dataset.label;
-            const value = context.raw;
+            const label = context.dataset.label
+            const value = context.raw
             const originalValue = engagementByType[context.dataIndex][
               `avg${label.replace(' ', '')}` as keyof typeof engagementByType[0]
-            ];
+            ]
             
             if (label === 'Engagement Rate') {
-              return `${label}: ${value.toFixed(1)}%`;
+              return `${label}: ${value.toFixed(1)}%`
             }
-            return `${label}: ${originalValue.toLocaleString()} (${value.toFixed(1)}%)`;
+            return `${label}: ${originalValue.toLocaleString()} (${value.toFixed(1)}%)`
+          }
+        }
+      },
+      legend: {
+        position: 'top' as const,
+        labels: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
           }
         }
       }
     }
-  };
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Post Type Performance Radar</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Relative performance across different metrics
-        </p>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="h-[400px]">
-          <Radar data={data} options={options} />
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-full overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
+          <CardTitle className="text-2xl font-bold">Post Type Performance Radar</CardTitle>
+          <p className="text-sm opacity-80">
+            Relative performance across different metrics
+          </p>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="h-[400px]">
+            <Radar data={data} options={options} />
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }

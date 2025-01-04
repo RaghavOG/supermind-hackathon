@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+'use client'
+
+import { motion } from 'framer-motion'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,9 +11,9 @@ import {
   Title,
   Tooltip,
   Legend
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from 'chart.js'
+import { Bar } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 ChartJS.register(
   CategoryScale,
@@ -21,21 +23,21 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 interface EngagementType {
-  type: string;
-  avgLikes: number;
-  avgShares: number;
-  avgComments: number;
-  avgSaves: number;
-  avgImpressions: number;
-  avgReach: number;
-  avgEngagementRate: number;
+  type: string
+  avgLikes: number
+  avgShares: number
+  avgComments: number
+  avgSaves: number
+  avgImpressions: number
+  avgReach: number
+  avgEngagementRate: number
 }
 
 interface EngagementProps {
-  engagementByType: EngagementType[];
+  engagementByType: EngagementType[]
 }
 
 export function EngagementRate({ engagementByType }: EngagementProps) {
@@ -59,7 +61,7 @@ export function EngagementRate({ engagementByType }: EngagementProps) {
         borderRadius: 4,
       }
     ]
-  };
+  }
 
   const options = {
     responsive: true,
@@ -68,38 +70,67 @@ export function EngagementRate({ engagementByType }: EngagementProps) {
       tooltip: {
         callbacks: {
           label: (context: any) => {
-            const datasetLabel = context.dataset.label;
-            const value = context.raw;
-            return `${datasetLabel}: ${value}%`;
+            const datasetLabel = context.dataset.label
+            const value = context.raw
+            return `${datasetLabel}: ${value}%`
           }
         }
       },
       legend: {
         position: 'top' as const,
+        labels: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
+        }
       }
     },
     scales: {
+      x: {
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
+        }
+      },
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Rate (%)'
+          text: 'Rate (%)',
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       }
     }
-  };
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium">Engagement & Reach Rates by Post Type</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="h-[400px]">
-          <Bar data={data} options={options} />
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-full overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+          <CardTitle className="text-2xl font-bold">Engagement & Reach Rates by Post Type</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="h-[400px]">
+            <Bar data={data} options={options} />
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }
-

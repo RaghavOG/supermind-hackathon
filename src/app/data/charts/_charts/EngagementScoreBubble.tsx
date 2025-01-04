@@ -1,44 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+'use client'
+
+import { motion } from 'framer-motion'
 import {
   Chart as ChartJS,
-  CategoryScale,
   LinearScale,
-  BarElement,
   PointElement,
-  Title,
   Tooltip,
   Legend
-} from 'chart.js';
-import {  Bubble } from 'react-chartjs-2';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from 'chart.js'
+import { Bubble } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 ChartJS.register(
-  CategoryScale,
   LinearScale,
-  BarElement,
   PointElement,
-  Title,
   Tooltip,
   Legend
-);
+)
 
 interface EngagementType {
-  type: string;
-  avgLikes: number;
-  avgShares: number;
-  avgComments: number;
-  avgSaves: number;
-  avgImpressions: number;
-  avgReach: number;
-  avgEngagementRate: number;
+  type: string
+  avgLikes: number
+  avgShares: number
+  avgComments: number
+  avgSaves: number
+  avgImpressions: number
+  avgReach: number
+  avgEngagementRate: number
 }
 
 interface EngagementProps {
-  engagementByType: EngagementType[];
+  engagementByType: EngagementType[]
 }
-
-
 
 export function EngagementScore({ engagementByType }: EngagementProps) {
   const data = {
@@ -57,7 +51,7 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
         'rgba(153, 102, 255, 0.6)',
       ][index % 5]
     }))
-  };
+  }
 
   const options = {
     responsive: true,
@@ -66,13 +60,33 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
       x: {
         title: {
           display: true,
-          text: 'Average Likes'
+          text: 'Average Likes',
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       },
       y: {
         title: {
           display: true,
-          text: 'Average Impressions'
+          text: 'Average Impressions',
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       }
     },
@@ -80,10 +94,10 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
       tooltip: {
         callbacks: {
           label: (context: any) => {
-            const dataPoint = context.raw;
+            const dataPoint = context.raw
             const engagementType = engagementByType.find(
               item => item.type === context.dataset.label
-            );
+            )
             return [
               `Type: ${context.dataset.label}`,
               `Likes: ${dataPoint.x.toFixed(1)}`,
@@ -91,27 +105,38 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
               `Engagement Rate: ${(engagementType?.avgEngagementRate || 0).toFixed(2)}%`,
               `Saves: ${(engagementType?.avgSaves || 0).toFixed(1)}`,
               `Comments: ${(engagementType?.avgComments || 0).toFixed(1)}`
-            ];
+            ]
           }
         }
       },
       legend: {
         position: 'top' as const,
+        labels: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
+        }
       }
     }
-  };
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-lg font-medium">Engagement Distribution by Post Type</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="h-[400px]">
-          <Bubble data={data} options={options} />
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-full overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-pink-400 to-purple-500 text-white">
+          <CardTitle className="text-2xl font-bold">Engagement Distribution by Post Type</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="h-[400px]">
+            <Bubble data={data} options={options} />
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }
-

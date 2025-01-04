@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -6,9 +9,9 @@ import {
   Title,
   Tooltip,
   Legend
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from 'chart.js'
+import { Bar } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 ChartJS.register(
   CategoryScale,
@@ -17,19 +20,19 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 interface PostTypeComparisonProps {
   engagementByType: Array<{
-    type: string;
-    avgLikes: number;
-    avgShares: number;
-    avgComments: number;
-    avgSaves: number;
-    avgImpressions: number;
-    avgReach: number;
-    avgEngagementRate: number;
-  }>;
+    type: string
+    avgLikes: number
+    avgShares: number
+    avgComments: number
+    avgSaves: number
+    avgImpressions: number
+    avgReach: number
+    avgEngagementRate: number
+  }>
 }
 
 export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps) {
@@ -61,7 +64,7 @@ export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps
         borderRadius: 4,
       }
     ]
-  };
+  }
 
   const options = {
     responsive: true,
@@ -72,15 +75,19 @@ export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps
         labels: {
           usePointStyle: true,
           padding: 20,
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
         }
       },
       tooltip: {
         callbacks: {
           label: (context: any) => {
-            const value = context.raw;
+            const value = context.raw
             return `${context.dataset.label}: ${value.toLocaleString(undefined, { 
               maximumFractionDigits: 0 
-            })}`;
+            })}`
           }
         }
       }
@@ -89,6 +96,12 @@ export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps
       x: {
         grid: {
           display: false
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       },
       y: {
@@ -97,28 +110,39 @@ export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps
           color: 'rgba(0, 0, 0, 0.1)'
         },
         ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          },
           callback: (value: number) => {
-            if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
-            return value;
+            if (value >= 1000) return `${(value / 1000).toFixed(1)}k`
+            return value
           }
         }
       }
     }
-  };
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Post Type Performance</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Average engagement metrics by post type
-        </p>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="h-[400px]">
-          <Bar data={data} options={options} />
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-full overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+          <CardTitle className="text-2xl font-bold">Post Type Performance</CardTitle>
+          <p className="text-sm opacity-80">
+            Average engagement metrics by post type
+          </p>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="h-[400px]">
+            <Bar data={data} options={options} />
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }
+

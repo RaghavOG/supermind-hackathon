@@ -1,3 +1,7 @@
+'use client'
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,10 +11,9 @@ import {
   Title,
   Tooltip,
   Legend
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState } from 'react';
+} from 'chart.js'
+import { Line } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 ChartJS.register(
   CategoryScale,
@@ -20,22 +23,22 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 interface DailyEngagement {
-  likes: number;
-  shares: number;
-  comments: number;
-  saves: number;
-  impressions: number;
-  reach: number;
-  profileVisits: number;
-  engagementRate: number;
-  followerCount: number;
+  likes: number
+  shares: number
+  comments: number
+  saves: number
+  impressions: number
+  reach: number
+  profileVisits: number
+  engagementRate: number
+  followerCount: number
 }
 
 interface PostPerformanceGraphProps {
-  dailyEngagement: Record<string, DailyEngagement>;
+  dailyEngagement: Record<string, DailyEngagement>
 }
 
 export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphProps) {
@@ -44,9 +47,9 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
     'comments',
     'shares',
     'saves'
-  ]);
+  ])
 
-  const dates = Object.keys(dailyEngagement).sort();
+  const dates = Object.keys(dailyEngagement).sort()
   
   const metricsConfig = {
     likes: { color: '#FF6384', label: 'Likes' },
@@ -57,7 +60,7 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
     reach: { color: '#FF9F40', label: 'Reach' },
     profileVisits: { color: '#8AC926', label: 'Profile Visits' },
     engagementRate: { color: '#FF6B6B', label: 'Engagement Rate' }
-  };
+  }
 
   const data = {
     labels: dates,
@@ -72,7 +75,7 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
       pointHoverRadius: 6,
       yAxisID: metric === 'engagementRate' ? 'percentage' : 'absolute'
     }))
-  };
+  }
 
   const options = {
     responsive: true,
@@ -87,6 +90,10 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
         labels: {
           usePointStyle: true,
           padding: 20,
+          font: {
+            family: "'Inter', sans-serif",
+            size: 12
+          }
         }
       },
       tooltip: {
@@ -98,12 +105,12 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
         displayColors: true,
         callbacks: {
           label: (context: any) => {
-            const value = context.raw;
-            const metric = selectedMetrics[context.datasetIndex];
+            const value = context.raw
+            const metric = selectedMetrics[context.datasetIndex]
             if (metric === 'engagementRate') {
-              return `${context.dataset.label}: ${value.toFixed(1)}%`;
+              return `${context.dataset.label}: ${value.toFixed(1)}%`
             }
-            return `${context.dataset.label}: ${value.toLocaleString()}`;
+            return `${context.dataset.label}: ${value.toLocaleString()}`
           }
         }
       }
@@ -115,7 +122,11 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
         },
         ticks: {
           maxRotation: 45,
-          minRotation: 45
+          minRotation: 45,
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          }
         }
       },
       absolute: {
@@ -126,10 +137,14 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
           color: 'rgba(0, 0, 0, 0.1)'
         },
         ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          },
           callback: (value: number) => {
-            if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
-            if (value >= 1000) return `${(value / 1000).toFixed(1)}k`;
-            return value;
+            if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
+            if (value >= 1000) return `${(value / 1000).toFixed(1)}k`
+            return value
           }
         }
       },
@@ -141,45 +156,57 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
           drawOnChartArea: false,
         },
         ticks: {
+          font: {
+            family: "'Inter', sans-serif",
+            size: 10
+          },
           callback: (value: number) => `${value.toFixed(1)}%`
         }
       }
     }
-  };
+  }
 
   const toggleMetric = (metric: string) => {
     setSelectedMetrics(prev => 
       prev.includes(metric) 
         ? prev.filter(m => m !== metric)
         : [...prev, metric]
-    );
-  };
+    )
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Post Performance Over Time</CardTitle>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {Object.entries(metricsConfig).map(([metric, config]) => (
-            <button
-              key={metric}
-              onClick={() => toggleMetric(metric)}
-              className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                selectedMetrics.includes(metric)
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground'
-              }`}
-            >
-              {config.label}
-            </button>
-          ))}
-        </div>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="h-[400px]">
-          <Line data={data} options={options} />
-        </div>
-      </CardContent>
-    </Card>
-  );
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="w-full overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
+          <CardTitle className="text-2xl font-bold">Post Performance Over Time</CardTitle>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {Object.entries(metricsConfig).map(([metric, config]) => (
+              <motion.button
+                key={metric}
+                onClick={() => toggleMetric(metric)}
+                className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                  selectedMetrics.includes(metric)
+                    ? 'bg-white text-blue-600'
+                    : 'bg-blue-600 text-white'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {config.label}
+              </motion.button>
+            ))}
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="h-[400px]">
+            <Line data={data} options={options} />
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
 }
