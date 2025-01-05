@@ -1,42 +1,52 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { WavyBackground } from "@/components/ui/wavy-background"
 
 export default function HeroSection() {
   return (
-    <WavyBackground className="max-w-full overflow-hidden">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 md:pr-8 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white mb-6">
-              Empower Your Journey
-            </h1>
-            <p className="text-lg md:text-xl text-purple-100 mb-8">
-              Unlock the full potential of your online presence with our cutting-edge solutions. We blend creativity and technology to deliver exceptional results.
-            </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Button size="lg" variant="default">
-                Get Started
-              </Button>
-              <Button size="lg" variant="outline">
-                Learn More
-              </Button>
+    <WavyBackground className="w-full min-h-screen flex items-center">
+      <div className="w-full px-[5%] lg:px-[10%]"> {/* Adjusted padding for better mobile view */}
+        <div className="w-full max-w-7xl mx-auto py-16 sm:py-20 lg:py-32"> {/* Adjusted padding for mobile */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="w-full lg:w-1/2 lg:pr-8">
+              <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6">
+                Social Media Analytics
+              </h1>
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl text-white mb-4 lg:mb-6">
+                with Langflow and DataStax
+              </h3>
+              <p className="text-lg sm:text-xl text-purple-100 mb-8">
+                We leverage Langflow and DataStax Astra DB to analyze engagement data and generate actionable insights, helping optimize content strategies with ease.
+              </p>
+              <div className=" group flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <Button asChild size="lg" variant="default" className="w-full sm:w-auto bg-purple-600 hover:bg-white text-white hover:text-purple-700 font-semibold transition-colors duration-300">
+                  <Link href="/chatbot">
+                    Chatbot
+                  </Link>
+                </Button>
+                
+                <Button asChild size="lg" variant="default" className="w-full sm:w-auto bg-white hover:bg-purple-700 text-purple-700 hover:text-white font-semibold transition-colors duration-300">
+                  <Link href="/data/charts">
+                    Charts
+                  </Link>
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="md:w-1/2 flex justify-center">
-            <Image
-              src="/placeholder.svg?height=400&width=400"
-              alt="Hero Graphic"
-              width={400}
-              height={400}
-              className="rounded-lg shadow-xl max-w-full h-auto"
-            />
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+              <Image
+                src="/placeholder.svg"
+                alt="Hero Graphic"
+                width={500}
+                height={500}
+                className="rounded-lg shadow-xl max-w-full h-auto hidden lg:block" // Hidden on mobile, visible on large screens
+              />
+            </div>
           </div>
         </div>
       </div>
     </WavyBackground>
   )
 }
-

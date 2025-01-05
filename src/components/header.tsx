@@ -1,71 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-
-// import Link from 'next/link'
-// import { useState } from 'react'
-// import { Button } from "@/components/ui/button"
-// import { Home, MessageCircle, Menu, X } from 'lucide-react'
-
-// export default function Header() {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-//   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-
-//   const navItems = [
-//     { href: '/', label: 'Home', icon: Home },
-//     { href: '/chatbot', label: 'Chat', icon: MessageCircle },
-//   ]
-
-//   return (
-//     <header className="bg-gray-800 text-white shadow-md">
-//       <div className="container mx-auto px-4">
-//         <div className="flex justify-between items-center py-4">
-//           <Link href="/" className="text-xl font-bold">MyApp</Link>
-          
-//           {/* Desktop Navigation */}
-//           <nav className="hidden md:flex space-x-4">
-//             {navItems.map((item) => (
-//               <Link key={item.href} href={item.href}>
-//                 <Button variant="ghost" className="text-white hover:text-gray-300">
-//                   <item.icon className="w-4 h-4 mr-2" />
-//                   {item.label}
-//                 </Button>
-//               </Link>
-//             ))}
-//           </nav>
-
-//           <Button variant="ghost" className="md:hidden" onClick={toggleMenu}>
-//             {isMenuOpen ? <X /> : <Menu />}
-//           </Button>
-//         </div>
-
-//         {/* Mobile Navigation */}
-//         {isMenuOpen && (
-//           <nav className="md:hidden pb-4">
-//             {navItems.map((item) => (
-//               <Link key={item.href} href={item.href}>
-//                 <Button variant="ghost" className="w-full text-left text-white hover:text-gray-300 py-2">
-//                   <item.icon className="w-4 h-4 mr-2 inline" />
-//                   {item.label}
-//                 </Button>
-//               </Link>
-//             ))}
-//           </nav>
-//         )}
-//       </div>
-//     </header>
-//   )
-// }
-
-// 'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Home, User, Briefcase, BookOpen, Image } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { Home, MessageSquare, BarChart2, Menu, X } from 'lucide-react'
 
 export default function Navbar() {
   const [time, setTime] = useState<string>('')
-  const [location] = useState('logo')
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const updateTime = () => {
@@ -84,45 +28,116 @@ export default function Navbar() {
     return () => clearInterval(interval)
   }, [])
 
+  const navItems = [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Chatbot', href: '/chatbot', icon: MessageSquare },
+    { name: 'Charts', href: '/data/charts', icon: BarChart2 },
+  ]
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="mx-auto px-4 ">
-        <div className="flex items-center justify-between h-16">
-          {/* Location */}
-          <div className="text-sm text-zinc-400">{location}</div>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl font-bold"
+          >
+            <Link href="/" className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              NeuralNitwits
+            </Link>
+          </motion.div>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-1 backdrop-blur-md bg-black/30 rounded-full p-2 border">
-            <Link
-              href="/"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full text-sm text-zinc-300 hover:bg-white/10 transition-colors"
-            >
-              {/* <Home className="w-4 h-4" /> */}
-              Home
-            </Link>
-
-            <Link
-              href="/chatbot"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full text-sm text-zinc-300 hover:bg-white/10 transition-colors"
-            >
-              {/* <Briefcase className="w-4 h-4" /> */}
-              Chat
-            </Link>
-            <Link
-              href="/data/charts"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full text-sm text-zinc-300 hover:bg-white/10 transition-colors"
-            >
-              {/* <BookOpen className="w-4 h-4" /> */}
-              Charts
-            </Link>
-           
+          <nav className="hidden md:flex items-center space-x-3">
+            {navItems.map((item) => (
+              <NavLink key={item.name} href={item.href} name={item.name} icon={item.icon} isActive={pathname === item.href} />
+            ))}
           </nav>
 
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white hover:text-purple-400 focus:outline-none focus:text-purple-400 transition-colors duration-200"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </motion.button>
+          </div>
+
           {/* Time */}
-          <div className="text-sm text-zinc-400">{time}</div>
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-lg text-zinc-400"
+          >
+            {time}
+          </motion.div>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-gray-900"
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {navItems.map((item) => (
+                <MobileNavLink key={item.name} href={item.href} name={item.name} icon={item.icon} isActive={pathname === item.href} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
+  )
+}
+
+function NavLink({ href, name, icon: Icon, isActive }: { href: string; name: string; icon: React.ElementType; isActive: boolean }) {
+  return (
+    <Link href={href} passHref>
+      <motion.a
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`flex items-center px-4 py-2 rounded-full text-lg transition-all duration-200 ${
+          isActive 
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' 
+            : 'text-zinc-300  hover:text-white'
+        }`}
+      >
+        <Icon className={`w-5 h-5 mr-2 ${isActive ? 'animate-pulse' : ''}`} />
+        {name}
+      </motion.a>
+    </Link>
+  )
+}
+
+function MobileNavLink({ href, name, icon: Icon, isActive }: { href: string; name: string; icon: React.ElementType; isActive: boolean }) {
+  return (
+    <Link href={href} passHref>
+      <motion.a
+        whileTap={{ scale: 0.95 }}
+        className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
+          isActive 
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' 
+            : 'text-zinc-300 hover:bg-gray-800 hover:text-white'
+        }`}
+      >
+        <div className="flex items-center">
+          <Icon className={`w-5 h-5 mr-2 ${isActive ? 'animate-pulse' : ''}`} />
+          {name}
+        </div>
+      </motion.a>
+    </Link>
   )
 }
 
