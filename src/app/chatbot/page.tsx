@@ -1,16 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @next/next/no-img-element */
+
 'use client'
 import * as React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import {
-  Paperclip,
   Send,
   FileIcon,
   ImageIcon,
-  X,
   RotateCcw,
   Bot,
   User,
@@ -85,7 +82,6 @@ const ChatComponent = () => {
   const [showScrollButton, setShowScrollButton] = React.useState(false)
   const [typingText, setTypingText] = React.useState('')
 
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
   const chatContainerRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
@@ -252,21 +248,7 @@ const ChatComponent = () => {
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files)
-      const totalSize = newFiles.reduce((sum, file) => sum + file.size, 0)
-      if (totalSize > 10 * 1024 * 1024) {
-        alert('Total file size exceeds 10MB limit')
-        return
-      }
-      setFiles(prev => [...prev, ...newFiles])
-    }
-  }
 
-  const removeFile = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index))
-  }
 
   const clearChat = () => {
     if (window.confirm('Clear chat history?')) {
@@ -275,8 +257,9 @@ const ChatComponent = () => {
     }
   }
 
-  const handleEmojiSelect = (emojiData: { emoji: string }) => {
-    setInput(prev => prev + emojiData.emoji)
+  const handleEmojiSelect = (emojiData: { unified: string; names: string[] }) => {
+    const emoji = String.fromCodePoint(...emojiData.unified.split('-').map(u => parseInt(u, 16)));
+    setInput(prev => prev + emoji);
   }
 
   const formatTime = (timestamp: number) => {
@@ -448,24 +431,7 @@ const ChatComponent = () => {
 
         <footer className="p-4 border-t bg-card">
           <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              multiple
-              className="hidden"
-              accept="image/*,.pdf,.doc,.docx,.txt"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isAnalyzing || isTyping}
-              className="flex-shrink-0"
-            >
-              <Paperclip className="h-4 w-4" />
-            </Button>
+           
 
             <div className="flex-1 flex gap-2">
               <Input
@@ -508,42 +474,7 @@ const ChatComponent = () => {
             </Button>
           </form>
 
-          {files.length > 0 && (
-            <div className="mt-4 p-2 border rounded-lg bg-muted/50">
-              <div className="text-xs font-medium mb-2">
-                Attachments ({files.length}):
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {files.map((file, i) => (
-                  <div key={i} className="relative group">
-                    {file.type.startsWith('image/') ? (
-                      <div className="w-16 h-16 rounded border overflow-hidden">
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt={file.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2 p-2 border rounded bg-background">
-                        <FileIcon className="h-4 w-4" />
-                        <span className="text-xs truncate max-w-[100px]">{file.name}</span>
-                      </div>
-                    )}
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      className="h-5 w-5 absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={() => removeFile(i)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          
         </footer>
       </div>
     </main>
