@@ -162,7 +162,7 @@ export function EngagementGrowth({ dailyEngagement }: EngagementGrowthProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden bg-black">
+      <Card className="w-full overflow-hidden ">
         <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
           <CardTitle className="text-2xl font-bold">Engagement Growth Trends</CardTitle>
           <p className="text-sm opacity-80">

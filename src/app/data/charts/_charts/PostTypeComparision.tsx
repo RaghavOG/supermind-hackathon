@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { motion } from 'framer-motion'
@@ -122,7 +121,7 @@ export function PostTypeRadar({ engagementByType }: PostTypeRadarProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden bg-black text-white">
+      <Card className="w-full overflow-hidden  text-white">
         <CardHeader className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
           <CardTitle className="text-2xl font-bold">Post Type Performance Radar</CardTitle>
           <p className="text-sm opacity-80">
