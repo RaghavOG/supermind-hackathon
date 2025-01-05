@@ -148,7 +148,10 @@ export function EngagementGrowth({ dailyEngagement }: EngagementGrowthProps) {
             family: "'Inter', sans-serif",
             size: 10
           },
-          callback: (value: number) => `${value.toFixed(1)}%`
+          callback: function (tickValue: string | number) {
+            const value = Number(tickValue);
+            return `${value.toFixed(1)}%`;
+          }
         }
       }
     }

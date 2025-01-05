@@ -80,8 +80,8 @@ export default function Dashboard() {
       <EngagementSummary engagementByType={processedData.engagementByType} />
       <PostPerformanceGraph dailyEngagement={processedData.dailyEngagement} />
       <PostTypeComparison engagementByType={processedData.engagementByType} />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <EngagementGrowth dailyEngagement={processedData.dailyEngagement} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <PostTypeRadar engagementByType={processedData.engagementByType} />
         <EngagementRate engagementByType={processedData.engagementByType} />
         <EngagementScore engagementByType={processedData.engagementByType} />
