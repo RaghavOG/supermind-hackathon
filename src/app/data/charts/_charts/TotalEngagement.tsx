@@ -39,7 +39,7 @@ export function TotalEngagement({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="overflow-hidden bg-black">
+      <Card className="overflow-hidden ">
         <CardHeader className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
           <CardTitle className="text-2xl font-bold">Total Engagement Metrics</CardTitle>
         </CardHeader>

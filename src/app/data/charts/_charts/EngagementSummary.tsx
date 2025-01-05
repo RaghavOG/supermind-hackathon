@@ -33,7 +33,7 @@ export function EngagementSummary({ engagementByType }: EngagementSummaryProps) 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="overflow-hidden text-white bg-black">
+      <Card className="overflow-hidden text-white ">
         <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
           <CardTitle className="text-2xl font-bold">Engagement Summary by Post Type</CardTitle>
         </CardHeader>

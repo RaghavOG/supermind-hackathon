@@ -121,7 +121,7 @@ export function EngagementRate({ engagementByType }: EngagementProps) {
       transition={{ duration: 0.5 }}
       className=''
     >
-      <Card className="w-full overflow-hidden bg-black text-white">
+      <Card className="w-full overflow-hidden  text-white">
         <CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
           <CardTitle className="text-2xl font-bold">Engagement & Reach Rates by Post Type</CardTitle>
         </CardHeader>

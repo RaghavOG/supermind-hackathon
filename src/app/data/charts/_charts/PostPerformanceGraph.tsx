@@ -183,7 +183,7 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden bg-black">
+      <Card className="w-full overflow-hidden ">
         <CardHeader className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
           <CardTitle className="text-2xl font-bold">Post Performance Over Time</CardTitle>
           <div className="flex flex-wrap gap-2 mt-4">
