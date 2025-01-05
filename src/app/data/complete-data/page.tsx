@@ -153,7 +153,7 @@ export default function EnhancedEngagementMetrics() {
             >
               Previous
             </Button>
-            <span className="text-blue-300 text-2xl font-semibold">
+            <span className="text-blue-300 text-lg sm:text-xl md:text-2xl font-semibold">
               Page {currentPage} of {totalPages}
             </span>
             <Button
