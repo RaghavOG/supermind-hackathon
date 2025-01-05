@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 'use client'
 import * as React from 'react'
@@ -33,11 +34,55 @@ interface AIPrompt {
   action: string
 }
 
+export function formatMessage(content: string): React.ReactNode {
+  const lines = content.split('\n');
+  
+  // Helper function to clean Markdown syntax
+  const cleanMarkdown = (text: string) => {
+    return text.replace(/\*\*/g, '').trim();
+  };
+  
+  return lines.map((line, index) => {
+    const trimmedLine = line.trim();
+    
+    // Empty line handling
+    if (!trimmedLine) {
+      return <div key={index} className="h-2" />;
+    }
+    
+    // Heading handling (text between ** **)
+    if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
+      return (
+        <h3 key={index} className="font-bold text-lg mb-2">
+          {cleanMarkdown(trimmedLine)}
+        </h3>
+      );
+    }
+    
+    // Bullet point handling
+    if (trimmedLine.startsWith('* ')) {
+      return (
+        <li key={index} className="ml-4 mb-1 list-disc">
+          {cleanMarkdown(trimmedLine.slice(2))}
+        </li>
+      );
+    }
+    
+    // Regular paragraph
+    return <p key={index} className="mb-1">{cleanMarkdown(line)}</p>;
+  });
+}
+
 const ChatComponent = () => {
-  const [messages, setMessages] = React.useState<Message[]>(() => {
-    const savedMessages = localStorage.getItem('chatMessages')
-    return savedMessages ? JSON.parse(savedMessages) : []
-  })
+  // const [messages, setMessages] = React.useState<Message[]>(() => {
+  //   if (typeof window !== "undefined") { // Ensure we're in the browser
+  //     const savedMessages = localStorage.getItem('chatMessages')
+  //     return savedMessages ? JSON.parse(savedMessages) : []
+  //   }
+  //   return [] // Default value if not in browser (e.g., during SSR)
+  // })
+
+  const [messages, setMessages] = React.useState<Message[]>([]);
   const [input, setInput] = React.useState('')
   const [files, setFiles] = React.useState<File[]>([])
   const [isAnalyzing, setIsAnalyzing] = React.useState(false)
@@ -49,11 +94,19 @@ const ChatComponent = () => {
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const chatContainerRef = React.useRef<HTMLDivElement>(null)
 
-  const aiPrompts: AIPrompt[] = [
-    { text: "Help me brainstorm", action: "Let's brainstorm some ideas together." },
-    { text: "Explain this", action: "I'd be happy to explain. What's your question?" },
-    { text: "Write a message", action: "I can help compose a message." },
-    { text: "Analyze data", action: "I can help analyze your data." }
+  // these 
+  React.useEffect(() => {
+    const savedMessages = localStorage.getItem('chatMessages');
+    if (savedMessages) {
+      setMessages(JSON.parse(savedMessages));
+    }
+  }, []);
+
+const aiPrompts: AIPrompt[] = [
+    { text: "Reels vs Stories", action: "Compare the performance of Reels vs Stories" },
+    { text: "Engagement trends", action: "Show me engagement trends" },
+    { text: "Top performing content", action: "What's my top performing content?" },
+    { text: "Growth analysis", action: "Analyze my account growth" }
   ]
 
   const handleScroll = React.useCallback(() => {
@@ -85,8 +138,11 @@ const ChatComponent = () => {
   }, [messages, showScrollButton, scrollToBottom])
 
   React.useEffect(() => {
-    localStorage.setItem('chatMessages', JSON.stringify(messages))
-  }, [messages])
+    if (messages.length > 0) {
+      localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+  }, [messages]);
+
 
   const simulateTyping = async (text: string) => {
     setIsTyping(true)
@@ -95,6 +151,7 @@ const ChatComponent = () => {
     for (let i = 0; i < text.length; i++) {
       currentText += text[i]
       setTypingText(currentText)
+      scrollToBottom();
       // Random delay between 20-50ms for more natural typing
       await new Promise(resolve => setTimeout(resolve, Math.random() * 30 + 20))
     }
@@ -115,7 +172,8 @@ const ChatComponent = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() && files.length === 0) return
-
+  
+    // Create and add user message
     const newMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -123,23 +181,90 @@ const ChatComponent = () => {
       timestamp: Date.now(),
       files: files.length > 0 ? files : undefined
     }
-
+  
     setMessages(prev => [...prev, newMessage])
     setInput('')
     setFiles([])
     setIsAnalyzing(true)
+  
+    try {
+      // Add and show the analyzing message for a consistent duration
+      const analyzingText = "Thinking... 🤔"
+      await simulateTyping(analyzingText)
+      const analyzingMessage: Message = {
+        id: `analyzing-${Date.now()}`,
+        role: 'assistant',
+        content: analyzingText,
+        timestamp: Date.now()
+      }
+      
+      setMessages(prev => [...prev, analyzingMessage])
+      scrollToBottom()
+      
+      // Simulate API call delay and keep "Analyzing" message visible
+      try {
+        const response = await Promise.all([
+          // Your actual API call here
+          fetch('/api/testbot', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: input }),
+          }),
+          // Minimum delay to show "Analyzing" message
+          await new Promise(resolve => setTimeout(resolve, 3000))
+        ]);
+  
+        const data = await response[0].json();
 
-    const responseText = `I understand your message${files.length ? ' and received your files' : ''}. How else can I help?`
-    const typedText = await simulateTyping(responseText)
-
-    const response: Message = {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content: typedText,
-      timestamp: Date.now()
+        console.log(data)
+        
+        if (!response[0].ok) {
+          throw new Error('Failed to get response');
+        }
+  
+  
+        // Remove analyzing message before showing the response
+        setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
+        
+  
+        // Show the response with typing effect
+        const typedResponse = await simulateTyping(data.response.message)
+  
+        const responseMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: typedResponse,
+          timestamp: Date.now()
+        }
+  
+        setMessages(prev => [...prev, responseMessage])
+  
+      } catch (error) {
+        console.error('Error:', error)
+        
+        // Remove analyzing message before showing error
+        setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
+        
+        const errorText = 'Sorry, I encountered an error. Please try again.'
+        const typedError = await simulateTyping(errorText)
+        
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: typedError,
+          timestamp: Date.now()
+        }
+        
+        setMessages(prev => [...prev, errorMessage])
+      }
+  
+    } finally {
+      setIsAnalyzing(false)
+      setIsTyping(false)
+      setTypingText('')
     }
-    setMessages(prev => [...prev, response])
-    setIsAnalyzing(false)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -259,7 +384,9 @@ const ChatComponent = () => {
                           {formatTime(message.timestamp)}
                         </span>
                       </div>
-                      <p className="text-sm whitespace-pre-wrap break-words break-all">{message.content}</p>
+                      <div className="text-sm whitespace-pre-wrap break-words break-all">
+                        {formatMessage(message.content)}
+                        </div>
 
                       {(message.files?.length ?? 0) > 0 && (
                         <div className="mt-2 flex flex-wrap gap-2">
@@ -291,7 +418,8 @@ const ChatComponent = () => {
                         <span className="text-xs opacity-50">{formatTime(Date.now())}</span>
                       </div>
                       <p className="text-sm whitespace-pre-wrap break-words">
-                        {typingText}<span className="animate-pulse">▋</span>
+                      {formatMessage(typingText)}
+                        <span className="animate-pulse">▋</span>
                       </p>
                     </div>
                   </div>
@@ -316,24 +444,7 @@ const ChatComponent = () => {
 
         <footer className="p-4 border-t bg-card">
           <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              multiple
-              className="hidden"
-              accept="image/*,.pdf,.doc,.docx,.txt"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isAnalyzing || isTyping}
-              className="flex-shrink-0"
-            >
-              <Paperclip className="h-4 w-4" />
-            </Button>
+           
 
             <div className="flex-1 flex gap-2">
               <Input
