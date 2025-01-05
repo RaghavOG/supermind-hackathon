@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// EmojiPickerComponent.tsx
 'use client'
 
 import dynamic from 'next/dynamic'
@@ -8,7 +6,7 @@ import React from 'react'
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false })
 
 interface EmojiPickerComponentProps {
-  onEmojiClick: (emojiData: any) => void
+  onEmojiClick: (emojiData: { unified: string; names: string[]; }) => void
 }
 
 const EmojiPickerComponent: React.FC<EmojiPickerComponentProps> = ({ onEmojiClick }) => {

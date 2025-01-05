@@ -210,7 +210,6 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
           </div>
         </CardContent>
       </Card>
-      
     </motion.div>
   )
 }

@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from 'lucide-react'
@@ -73,21 +73,21 @@ export default function EnhancedEngagementMetrics() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className="p-4 min-h-screen bg-black text-gray-100"
     >
-      <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
+      <h1 className="text-5xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
         Engagement Metrics
       </h1>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+          <Loader2 className="h-16 w-16 animate-spin text-blue-500" />
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -97,18 +97,18 @@ export default function EnhancedEngagementMetrics() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-900 border-b border-blue-500">
-                  <TableHead className="text-blue-300">Post ID</TableHead>
-                  <TableHead className="text-blue-300">Post Type</TableHead>
-                  <TableHead className="text-blue-300">Likes</TableHead>
-                  <TableHead className="text-blue-300">Shares</TableHead>
-                  <TableHead className="text-blue-300">Comments</TableHead>
-                  <TableHead className="text-blue-300">Saves</TableHead>
-                  <TableHead className="text-blue-300">Impressions</TableHead>
-                  <TableHead className="text-blue-300">Reach</TableHead>
-                  <TableHead className="text-blue-300">Profile Visits</TableHead>
-                  <TableHead className="text-blue-300">Follower Count</TableHead>
-                  <TableHead className="text-blue-300">Date Posted</TableHead>
-                  <TableHead className="text-blue-300">Engagement Rate</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Post ID</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Post Type</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Likes</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Shares</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Comments</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Saves</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Impressions</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Reach</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Profile Visits</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Follower Count</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Date Posted</TableHead>
+                  <TableHead className="text-blue-300 text-lg">Engagement Rate</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -118,58 +118,55 @@ export default function EnhancedEngagementMetrics() {
                       key={item.post_id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
                       className="border-b border-blue-500/30 hover:bg-blue-500/10 transition-colors duration-200"
                     >
-                      <TableCell className="font-medium text-purple-300">{item.post_id}</TableCell>
-                      <TableCell>{item.post_type}</TableCell>
-                      <TableCell>{item.likes}</TableCell>
-                      <TableCell>{item.shares}</TableCell>
-                      <TableCell>{item.comments}</TableCell>
-                      <TableCell>{item.saves}</TableCell>
-                      <TableCell>{item.impressions}</TableCell>
-                      <TableCell>{item.reach}</TableCell>
-                      <TableCell>{item.profile_visits}</TableCell>
-                      <TableCell>{item.follower_count}</TableCell>
-                      <TableCell>{item.date_posted}</TableCell>
-                      <TableCell>{item['engagement-rate']}</TableCell>
+                      <TableCell className="font-medium text-purple-300 text-lg">{item.post_id}</TableCell>
+                      <TableCell className="text-lg">{item.post_type}</TableCell>
+                      <TableCell className="text-lg">{item.likes}</TableCell>
+                      <TableCell className="text-lg">{item.shares}</TableCell>
+                      <TableCell className="text-lg">{item.comments}</TableCell>
+                      <TableCell className="text-lg">{item.saves}</TableCell>
+                      <TableCell className="text-lg">{item.impressions}</TableCell>
+                      <TableCell className="text-lg">{item.reach}</TableCell>
+                      <TableCell className="text-lg">{item.profile_visits}</TableCell>
+                      <TableCell className="text-lg">{item.follower_count}</TableCell>
+                      <TableCell className="text-lg">{item.date_posted}</TableCell>
+                      <TableCell className="text-lg">{item['engagement-rate']}</TableCell>
                     </motion.tr>
                   ))}
                 </AnimatePresence>
               </TableBody>
             </Table>
           </div>
-          <motion.div 
+          <motion.div
             className="flex justify-between mt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <Button 
+            <Button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               variant="outline"
-              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
             >
               Previous
             </Button>
-            <span className="text-blue-300 text-lg font-semibold">
+            <span className="text-blue-300 text-2xl font-semibold">
               Page {currentPage} of {totalPages}
             </span>
-            <Button 
+            <Button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               variant="outline"
-              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-blue-500 text-white hover:bg-blue-600 border-blue-300 shadow-md shadow-blue-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
             >
               Next
             </Button>
           </motion.div>
         </motion.div>
       )}
-      
     </motion.div>
   )
 }
-

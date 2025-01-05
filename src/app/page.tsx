@@ -69,12 +69,12 @@ export default function Home() {
 
 
         <section className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-purple-400">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl  mb-8 ">
             Ready for the Full Experience?
           </h2>
           <motion.a
             href="#"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-flex items-center"
+            className="bg-[#e100b8] hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-flex items-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

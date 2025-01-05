@@ -15,8 +15,6 @@ import { PostTypeRadar } from "./_charts/PostTypeComparision";
 import { EngagementRate } from "./_charts/EngagementRatePerPostType";
 import { EngagementScore } from "./_charts/EngagementScoreBubble";
 import { motion } from "framer-motion"
-import DotPattern from "@/components/ui/dot-pattern";
-import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const [data, setData] = useState<DataItem[]>([])
@@ -58,7 +56,7 @@ export default function Dashboard() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="p-6 space-y-6 "
+      className="p-6 space-y-6 bg-black"
     >
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Engagement Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -81,8 +79,6 @@ export default function Dashboard() {
       </div>
       <EngagementSummary engagementByType={processedData.engagementByType} />
       <PostPerformanceGraph dailyEngagement={processedData.dailyEngagement} />
-      <DotPattern className={cn("bg-red z-10 relative")} />
-
       <PostTypeComparison engagementByType={processedData.engagementByType} />
         <EngagementGrowth dailyEngagement={processedData.dailyEngagement} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -90,7 +86,7 @@ export default function Dashboard() {
         <EngagementRate engagementByType={processedData.engagementByType} />
         <EngagementScore engagementByType={processedData.engagementByType} />
       </div>
-      <DotPattern className={cn("bg-black -z-10")} />
+      {/* <DotPattern className={cn("bg-black -z-10")} /> */}
 
     </motion.div>
   )

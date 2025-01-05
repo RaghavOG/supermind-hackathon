@@ -156,8 +156,6 @@ const Dashboard = () => {
         {/* <EngagementScore data={processedData} /> */}
       </div>
     </div>
-          // <DotPattern className={cn("bg-black -z-10")} />
-    
   );
 };
 

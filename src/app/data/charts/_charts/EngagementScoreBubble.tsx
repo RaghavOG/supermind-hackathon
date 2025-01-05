@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { motion } from 'framer-motion'
@@ -127,10 +128,8 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden"
     >
-      <DotPattern className={cn("absolute inset-0 bg-black opacity-10")} />
-      <Card className="w-full relative z-10 bg-white bg-opacity-90">
+      <Card className="w-full overflow-hidden text-white ">
         <CardHeader className="bg-gradient-to-r from-pink-400 to-purple-500 text-white">
           <CardTitle className="text-2xl font-bold">Engagement Distribution by Post Type</CardTitle>
         </CardHeader>
@@ -143,4 +142,3 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
     </motion.div>
   )
 }
-
