@@ -19,6 +19,8 @@ import {
 } from 'lucide-react'
 import EmojiPickerComponent from './EmojiPickerComponent'
 import toast from 'react-hot-toast'
+import { formatMessage } from '@/utils/formatMessage'
+
 
 interface Message {
   id: string
@@ -33,44 +35,7 @@ interface AIPrompt {
   action: string
 }
 
-export function formatMessage(content: string): React.ReactNode {
-  const lines = content.split('\n');
 
-  // Helper function to clean Markdown syntax
-  const cleanMarkdown = (text: string) => {
-    return text.replace(/\*\*/g, '').trim();
-  };
-
-  return lines.map((line, index) => {
-    const trimmedLine = line.trim();
-
-    // Empty line handling
-    if (!trimmedLine) {
-      return <div key={index} className="h-2" />;
-    }
-
-    // Heading handling (text between ** **)
-    if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
-      return (
-        <h3 key={index} className="font-bold text-lg mb-2">
-          {cleanMarkdown(trimmedLine)}
-        </h3>
-      );
-    }
-
-    // Bullet point handling
-    if (trimmedLine.startsWith('* ')) {
-      return (
-        <li key={index} className="ml-4 mb-1 list-disc">
-          {cleanMarkdown(trimmedLine.slice(2))}
-        </li>
-      );
-    }
-
-    // Regular paragraph
-    return <p key={index} className="mb-1">{cleanMarkdown(line)}</p>;
-  });
-}
 
 const ChatComponent = () => {
   const [messages, setMessages] = React.useState<Message[]>([]);
