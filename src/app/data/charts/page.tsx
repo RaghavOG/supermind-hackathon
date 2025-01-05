@@ -56,7 +56,7 @@ export default function Dashboard() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900"
+      className="p-6 space-y-6 bg-black"
     >
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Engagement Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
