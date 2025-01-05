@@ -86,6 +86,8 @@ export default function Dashboard() {
         <EngagementRate engagementByType={processedData.engagementByType} />
         <EngagementScore engagementByType={processedData.engagementByType} />
       </div>
+      {/* <DotPattern className={cn("bg-black -z-10")} /> */}
+
     </motion.div>
   )
 }

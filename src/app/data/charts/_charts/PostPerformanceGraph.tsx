@@ -14,6 +14,9 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import DotPattern from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
+
 
 ChartJS.register(
   CategoryScale,
@@ -180,7 +183,7 @@ export function PostPerformanceGraph({ dailyEngagement }: PostPerformanceGraphPr
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden">
+      <Card className="w-full overflow-hidden bg-black">
         <CardHeader className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
           <CardTitle className="text-2xl font-bold">Post Performance Over Time</CardTitle>
           <div className="flex flex-wrap gap-2 mt-4">

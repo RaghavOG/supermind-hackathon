@@ -11,6 +11,8 @@ import {
 } from 'chart.js'
 import { Bubble } from 'react-chartjs-2'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import DotPattern from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 ChartJS.register(
   LinearScale,
@@ -127,7 +129,7 @@ export function EngagementScore({ engagementByType }: EngagementProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden">
+      <Card className="w-full overflow-hidden text-white ">
         <CardHeader className="bg-gradient-to-r from-pink-400 to-purple-500 text-white">
           <CardTitle className="text-2xl font-bold">Engagement Distribution by Post Type</CardTitle>
         </CardHeader>

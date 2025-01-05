@@ -10,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import DotPattern from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 interface EngagementSummaryProps {
   engagementByType: Array<{
@@ -31,7 +33,7 @@ export function EngagementSummary({ engagementByType }: EngagementSummaryProps) 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden text-white bg-black">
         <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
           <CardTitle className="text-2xl font-bold">Engagement Summary by Post Type</CardTitle>
         </CardHeader>
@@ -39,7 +41,7 @@ export function EngagementSummary({ engagementByType }: EngagementSummaryProps) 
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-muted/50">
+                <TableRow className="bg-gray/50">
                   <TableHead className="font-semibold">Post Type</TableHead>
                   <TableHead className="text-right">Avg Likes</TableHead>
                   <TableHead className="text-right">Avg Comments</TableHead>

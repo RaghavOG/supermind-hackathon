@@ -129,7 +129,7 @@ export function PostTypeComparison({ engagementByType }: PostTypeComparisonProps
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="w-full overflow-hidden">
+      <Card className="w-full overflow-hidden ">
         <CardHeader className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
           <CardTitle className="text-2xl font-bold">Post Type Performance</CardTitle>
           <p className="text-sm opacity-80">

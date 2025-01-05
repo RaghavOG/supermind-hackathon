@@ -14,6 +14,9 @@ import { EngagementGrowth } from '@/components/EngagementGrowth';
 import { PostTypeRadar } from '@/components/PostTypeComparision';
 import { EngagementRate } from '@/components/EngagementRatePerPostType';
 import { EngagementScore } from '@/components/EngagementScoreBubble';
+import DotPattern from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
+
 
 export default function Dashboard() {
     const [data, setData] = useState<DataItem[]>([]);
@@ -73,6 +76,8 @@ export default function Dashboard() {
   <EngagementRate engagementByType={processedData.engagementByType} />
   <EngagementScore engagementByType={processedData.engagementByType} />
 </div>
+      {/* <DotPattern className={cn("bg-black -z-10")} /> */}
+
       </div>
     );
   }
