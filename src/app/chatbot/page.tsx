@@ -17,9 +17,11 @@ import {
   Search,
   Smile,
   ChevronDown,
-  Sparkles
+  Sparkles,
+  Copy
 } from 'lucide-react'
 import EmojiPickerComponent from './EmojiPickerComponent'
+import toast from 'react-hot-toast'
 
 interface Message {
   id: string
@@ -36,20 +38,20 @@ interface AIPrompt {
 
 export function formatMessage(content: string): React.ReactNode {
   const lines = content.split('\n');
-  
+
   // Helper function to clean Markdown syntax
   const cleanMarkdown = (text: string) => {
     return text.replace(/\*\*/g, '').trim();
   };
-  
+
   return lines.map((line, index) => {
     const trimmedLine = line.trim();
-    
+
     // Empty line handling
     if (!trimmedLine) {
       return <div key={index} className="h-2" />;
     }
-    
+
     // Heading handling (text between ** **)
     if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
       return (
@@ -58,7 +60,7 @@ export function formatMessage(content: string): React.ReactNode {
         </h3>
       );
     }
-    
+
     // Bullet point handling
     if (trimmedLine.startsWith('* ')) {
       return (
@@ -67,21 +69,13 @@ export function formatMessage(content: string): React.ReactNode {
         </li>
       );
     }
-    
+
     // Regular paragraph
     return <p key={index} className="mb-1">{cleanMarkdown(line)}</p>;
   });
 }
 
 const ChatComponent = () => {
-  // const [messages, setMessages] = React.useState<Message[]>(() => {
-  //   if (typeof window !== "undefined") { // Ensure we're in the browser
-  //     const savedMessages = localStorage.getItem('chatMessages')
-  //     return savedMessages ? JSON.parse(savedMessages) : []
-  //   }
-  //   return [] // Default value if not in browser (e.g., during SSR)
-  // })
-
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [input, setInput] = React.useState('')
   const [files, setFiles] = React.useState<File[]>([])
@@ -94,7 +88,6 @@ const ChatComponent = () => {
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const chatContainerRef = React.useRef<HTMLDivElement>(null)
 
-  // these 
   React.useEffect(() => {
     const savedMessages = localStorage.getItem('chatMessages');
     if (savedMessages) {
@@ -102,7 +95,7 @@ const ChatComponent = () => {
     }
   }, []);
 
-const aiPrompts: AIPrompt[] = [
+  const aiPrompts: AIPrompt[] = [
     { text: "Reels vs Stories", action: "Compare the performance of Reels vs Stories" },
     { text: "Engagement trends", action: "Show me engagement trends" },
     { text: "Top performing content", action: "What's my top performing content?" },
@@ -143,7 +136,6 @@ const aiPrompts: AIPrompt[] = [
     }
   }, [messages]);
 
-
   const simulateTyping = async (text: string) => {
     setIsTyping(true)
     let currentText = ''
@@ -172,7 +164,7 @@ const aiPrompts: AIPrompt[] = [
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() && files.length === 0) return
-  
+
     // Create and add user message
     const newMessage: Message = {
       id: Date.now().toString(),
@@ -181,15 +173,15 @@ const aiPrompts: AIPrompt[] = [
       timestamp: Date.now(),
       files: files.length > 0 ? files : undefined
     }
-  
+
     setMessages(prev => [...prev, newMessage])
     setInput('')
     setFiles([])
     setIsAnalyzing(true)
-  
+
     try {
       // Add and show the analyzing message for a consistent duration
-      const analyzingText = "Thinking... 🤔 , This might take a while "
+      const analyzingText = "Thinking... 🤔 , This might take a while"
       await simulateTyping(analyzingText)
       const analyzingMessage: Message = {
         id: `analyzing-${Date.now()}`,
@@ -197,70 +189,62 @@ const aiPrompts: AIPrompt[] = [
         content: analyzingText,
         timestamp: Date.now()
       }
-      
+
       setMessages(prev => [...prev, analyzingMessage])
       scrollToBottom()
-      
+
       // Simulate API call delay and keep "Analyzing" message visible
       try {
-        const response = await Promise.all([
-          // Your actual API call here
-          fetch('/api/chatbot', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: input }),
-          }),
-          // Minimum delay to show "Analyzing" message
-          await new Promise(resolve => setTimeout(resolve, 3000))
-        ]);
-  
-        const data = await response[0].json();
+        const response = await fetch('/api/chatbot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: input }),
+        });
 
-        console.log(data)
-        
-        if (!response[0].ok) {
+        if (!response.ok) {
           throw new Error('Failed to get response');
         }
-  
-  
+
+        const data = await response.json();
+
+        console.log(data)
+
         // Remove analyzing message before showing the response
         setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
-        
-  
+
         // Show the response with typing effect
-        // const typedResponse = await simulateTyping(data.response.message)
         const typedResponse = await simulateTyping(data.response)
-  
+
         const responseMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: typedResponse,
           timestamp: Date.now()
         }
-  
+
         setMessages(prev => [...prev, responseMessage])
-  
+
       } catch (error) {
         console.error('Error:', error)
-        
+
         // Remove analyzing message before showing error
         setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
-        
+
         const errorText = 'Sorry, I encountered an error. Please try again.'
         const typedError = await simulateTyping(errorText)
-        
+
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: typedError,
           timestamp: Date.now()
         }
-        
+
         setMessages(prev => [...prev, errorMessage])
       }
-  
+
     } finally {
       setIsAnalyzing(false)
       setIsTyping(false)
@@ -300,6 +284,14 @@ const aiPrompts: AIPrompt[] = [
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success('Copied to clipboard')
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
   }
 
   return (
@@ -384,10 +376,21 @@ const aiPrompts: AIPrompt[] = [
                         <span className="text-xs opacity-50">
                           {formatTime(message.timestamp)}
                         </span>
+                        {message.role === 'assistant' && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => copyToClipboard(message.content)}
+                            className="ml-2"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
                       <div className="text-sm whitespace-pre-wrap break-words break-all">
                         {formatMessage(message.content)}
-                        </div>
+                      </div>
+
 
                       {(message.files?.length ?? 0) > 0 && (
                         <div className="mt-2 flex flex-wrap gap-2">
@@ -419,7 +422,7 @@ const aiPrompts: AIPrompt[] = [
                         <span className="text-xs opacity-50">{formatTime(Date.now())}</span>
                       </div>
                       <p className="text-sm whitespace-pre-wrap break-words">
-                      {formatMessage(typingText)}
+                        {formatMessage(typingText)}
                         <span className="animate-pulse">▋</span>
                       </p>
                     </div>
@@ -445,7 +448,24 @@ const aiPrompts: AIPrompt[] = [
 
         <footer className="p-4 border-t bg-card">
           <form onSubmit={handleSubmit} className="flex gap-2">
-           
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              multiple
+              className="hidden"
+              accept="image/*,.pdf,.doc,.docx,.txt"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isAnalyzing || isTyping}
+              className="flex-shrink-0"
+            >
+              <Paperclip className="h-4 w-4" />
+            </Button>
 
             <div className="flex-1 flex gap-2">
               <Input
