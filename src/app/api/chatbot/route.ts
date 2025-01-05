@@ -40,7 +40,9 @@ class LangflowClient {
     console.log(response)
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`)
+      const errorBody = await response.text(); // Log the error body for more context
+      console.error('API error response:', errorBody);
+      throw new Error(`API error: ${response.status} - ${errorBody}`);
     }
 
     const data = await response.json()

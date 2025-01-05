@@ -189,7 +189,7 @@ const aiPrompts: AIPrompt[] = [
   
     try {
       // Add and show the analyzing message for a consistent duration
-      const analyzingText = "Thinking... 🤔"
+      const analyzingText = "Thinking... 🤔 , This might take a while "
       await simulateTyping(analyzingText)
       const analyzingMessage: Message = {
         id: `analyzing-${Date.now()}`,
@@ -205,7 +205,7 @@ const aiPrompts: AIPrompt[] = [
       try {
         const response = await Promise.all([
           // Your actual API call here
-          fetch('/api/testbot', {
+          fetch('/api/chatbot', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -230,7 +230,8 @@ const aiPrompts: AIPrompt[] = [
         
   
         // Show the response with typing effect
-        const typedResponse = await simulateTyping(data.response.message)
+        // const typedResponse = await simulateTyping(data.response.message)
+        const typedResponse = await simulateTyping(data.response)
   
         const responseMessage: Message = {
           id: (Date.now() + 1).toString(),
