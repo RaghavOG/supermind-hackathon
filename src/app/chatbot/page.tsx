@@ -20,7 +20,8 @@ import {
 import EmojiPickerComponent from './EmojiPickerComponent'
 import toast from 'react-hot-toast'
 import { formatMessage } from '@/utils/formatMessage'
-
+import { cn } from '@/lib/utils'
+import {DotPattern} from '@/components/ui/dot-pattern'
 
 interface Message {
   id: string
@@ -244,7 +245,7 @@ const ChatComponent = () => {
   }
 
   return (
-    <main className="w-full h-screen pt-20 bg-black ">
+    <main className="w-full h-screen pt-20 bg-gradient-to-r from-black via-slate-950 to-black">
     <div className="max-w-3xl mx-auto h-[35rem] flex flex-col bg- border border-gray-800 p-3 rounded-md my-5">
       <header className="flex justify-between items-center px-4 py-2 border-b border-gray-800 bg-black">
         <div className="flex items-center gap-2">
@@ -438,6 +439,7 @@ const ChatComponent = () => {
         </form>
       </footer>
     </div>
+  
   </main>
   )
 }
