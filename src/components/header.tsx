@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { Home, MessageSquare, BarChart2, Menu, X } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Navbar() {
   const [time, setTime] = useState<string>('')
@@ -46,7 +47,8 @@ export default function Navbar() {
             className="text-3xl font-bold"
           >
             <Link href="/" className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              NeuralNitwits
+              {/* NeuralNitwits */}
+              <Image src="/NeuralNitwits_white.png" alt="NeuralNitwits" width={150} height={40} />
             </Link>
           </motion.div>
 
@@ -110,7 +112,7 @@ function NavLink({ href, name, icon: Icon, isActive }: { href: string; name: str
         whileTap={{ scale: 0.95 }}
         className={`flex items-center px-4 py-2 rounded-full text-lg transition-all duration-200 ${
           isActive 
-            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' 
+            ? 'bg-gradient-to-r text-white shadow-lg font-bold' 
             : 'text-zinc-300  hover:text-white'
         }`}
       >
