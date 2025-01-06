@@ -21,11 +21,11 @@ export default function OrbitingCirclesDemo() {
             <h1 className="text-4xl md:text-6xl lg:text-8xl mb-8 text-gray-100">Tech Stack </h1>
             <ShineBorder className="w-full">
               <p className="p-4 text-sm text-gray-300">
-              Our tech stack incorporates advanced tools like LangFlow for seamless workflow automation, Next.js for dynamic front-end development, DataStax for robust database management, and Groq AI for cutting-edge artificial intelligence solutions.              </p>
+              Our tech stack incorporates advanced tools like LangFlow for seamless workflow automation, Next.js for dynamic front-end development, DataStax for robust database management, and Groq AI for cutting-edge artificial intelligence to  analyze.              </p>
             </ShineBorder>
             <ShineBorder className="w-full">
               <p className="p-4 text-sm text-gray-300">
-              By leveraging LangFlow, Next.js, DataStax, and Groq AI, we built a scalable, efficient, and intelligent system that streamlines operations and enhances user experiences with innovative technologies.
+              Our chatbot for post analysis is powered by a cutting-edge tech stack, combining LangFlow, Next.js, DataStax, and Groq AI to ensure accurate analysis, seamless integration, and exceptional performance.
               </p>
             </ShineBorder>
           </div>
