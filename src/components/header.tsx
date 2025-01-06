@@ -37,7 +37,7 @@ export default function Navbar() {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black w-full">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -118,7 +118,7 @@ export default function Navbar() {
 function NavLink({ href, name, icon: Icon, isActive }: { href: string; name: string; icon: React.ElementType; isActive: boolean }) {
   return (
     <Link href={href} passHref>
-      <motion.a
+      <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className={`flex items-center px-4 py-2 rounded-full text-lg transition-all duration-200 ${
@@ -129,7 +129,7 @@ function NavLink({ href, name, icon: Icon, isActive }: { href: string; name: str
       >
         <Icon className={`w-5 h-5 mr-2 ${isActive ? 'animate-pulse' : ''}`} />
         {name}
-      </motion.a>
+      </motion.div>
     </Link>
   )
 }

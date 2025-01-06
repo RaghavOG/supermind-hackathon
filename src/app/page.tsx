@@ -35,7 +35,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 min-h-svh flex justify-center items-center">
           <section className="text-center">
-            <h2 className="text-4xl md:text-6xl lg:text-8xl  mb-8 font-akira ">
+            <h2 className="text-4xl md:text-6xl lg:text-8xl  mb-8 font-bold ">
               Ready for the Full Experience?
             </h2>
             <motion.div

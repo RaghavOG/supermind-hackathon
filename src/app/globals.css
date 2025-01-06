@@ -7,6 +7,11 @@ body {
 }
 
 @layer base {
+
+  @font-face {
+    font-family: 'Akira';
+    src: url('/fonts/Akira_Expanded.woff2') format('woff'),
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
