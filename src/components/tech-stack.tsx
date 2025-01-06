@@ -18,13 +18,13 @@ export default function OrbitingCirclesDemo() {
       <div className="relative z-10 flex flex-col items-center justify-center w-full  ">
         <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-8 sm:flex-wrap-reverse md:flex-nowrap">
           <div className="flex flex-col gap-4 w-full lg:w-1/2">
-            <h1 className="text-4xl md:text-6xl lg:text-8xl mb-8 text-gray-100">Tech Stack </h1>
+            <h1 className="text-5xl sm:text-5xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 lg:mb-6 font-akira">Tech Stack </h1>
             <ShineBorder className="w-full">
-              <p className="p-4 text-sm text-gray-300">
+            <p className="p-4 text-xl font-light text-gray-300">
               Our tech stack incorporates advanced tools like LangFlow for seamless workflow automation, Next.js for dynamic front-end development, DataStax for robust database management, and Groq AI for cutting-edge artificial intelligence to  analyze.              </p>
             </ShineBorder>
             <ShineBorder className="w-full">
-              <p className="p-4 text-sm text-gray-300">
+            <p className="p-4 text-xl font-light text-gray-300">
               Our chatbot for post analysis is powered by a cutting-edge tech stack, combining LangFlow, Next.js, DataStax, and Groq AI to ensure accurate analysis, seamless integration, and exceptional performance.
               </p>
             </ShineBorder>

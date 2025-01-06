@@ -71,22 +71,23 @@ export default function GitHubProfileCards() {
   }
 
   return (
-    <div className=" bg-black  p-4 sm:p-8 md:p-12 lg:p-24 ">
-      <h1 className="text-4xl md:text-6xl lg:text-8xl text-center mb-12 text-white">Meet the Developers</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 ">
+    <div className=" bg-black p-4 sm:p-8 md:p-12 lg:p-24 min-h-screen mt-48 flex flex-col  justify-center">
+      <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 font-akira">Meet the Developers</h1>
+      <h2 className='text-3xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 lg:mb-6 font-akira'>The Real OGs</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 max-w-7xl w-full mt-12">
         {users.map((user) => (
           <Card key={user.login} className="w-full bg-black border shadow-[0_0_15px_rgba(147,51,234,0.5)] transition-all duration-300 hover:shadow-[0_0_25px_rgba(147,51,234,0.8)]">
             <CardHeader>
               <div className="flex items-center space-x-4">
                 <Avatar className="h-12 w-12 ring-2 ring-purple-500">
                   <AvatarImage src={user.avatar_url} alt={user.name} />
-                  <AvatarFallback>{user.login.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>{user.login?.slice(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <CardTitle className="text-lg text-white">{user.name || 'N/A'}</CardTitle>
+                  <CardTitle className="text-xl text-zinc-200 font-sans font-bold">{user.name || 'N/A'}</CardTitle>
                   <div className="flex items-center space-x-2 text-sm text-purple-400">
                     <span>@{user.login}</span>
-                    <a 
+                    <a
                       href={user.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
