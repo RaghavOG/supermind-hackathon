@@ -21,7 +21,7 @@ export default function GitHubProfileCards() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const usernames = ['abhishekkapoorx', 'raghavOG', 'DesignDread', 'soham']
+  const usernames = ['abhishekkapoorx', 'RaghavOG', 'DesignDread', 'Anshul23782']
 
   useEffect(() => {
     const fetchData = async () => {
