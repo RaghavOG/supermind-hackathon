@@ -4,6 +4,7 @@ import "./globals.css";
 import { chivo } from "./font";
 import Header from "@/components/header";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer/>
+        <Toaster />
       </body>
     </html>
   );
