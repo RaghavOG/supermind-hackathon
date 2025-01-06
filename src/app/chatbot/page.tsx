@@ -20,8 +20,7 @@ import {
 import EmojiPickerComponent from './EmojiPickerComponent'
 import toast from 'react-hot-toast'
 import { formatMessage } from '@/utils/formatMessage'
-import { cn } from '@/lib/utils'
-import {DotPattern} from '@/components/ui/dot-pattern'
+
 
 interface Message {
   id: string
@@ -194,7 +193,13 @@ const ChatComponent = () => {
         // Remove analyzing message before showing error
         setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
 
-        const errorText = 'Sorry, I encountered an error. Please try again.'
+        let errorText = 'Sorry, I encountered an error. Please try again.'
+
+      if (error.message === 'API rate limit exceeded. Please try again later.') {
+        errorText = 'API rate limit exceeded. Please try again later.'
+      }
+
+
         const typedError = await simulateTyping(errorText)
 
         const errorMessage: Message = {
