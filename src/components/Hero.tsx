@@ -22,7 +22,7 @@ export default function HeroSection() {
                 We leverage Langflow and DataStax Astra DB to analyze engagement data and generate actionable insights, helping optimize content strategies with ease.
               </p>
               <div className=" group flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <Button asChild size="lg" variant="default" className="w-full sm:w-auto bg-purple-600 hover:bg-white text-white hover:text-purple-700 font-semibold transition-colors duration-300">
+                <Button asChild size="lg" variant="default" className="w-full sm:w-auto bg-purple-700 hover:bg-white text-white hover:text-purple-700 font-semibold transition-colors duration-300">
                   <Link href="/chatbot">
                     Chatbot
                   </Link>
@@ -37,11 +37,11 @@ export default function HeroSection() {
             </div>
             <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
               <Image
-                src="/placeholder.svg"
+                src="/heroAnimate2.gif"
                 alt="Hero Graphic"
                 width={500}
                 height={500}
-                className="rounded-lg shadow-xl max-w-full h-auto hidden lg:block" // Hidden on mobile, visible on large screens
+                className="rounded-lg max-w-full h-auto hidden lg:block" // Hidden on mobile, visible on large screens
               />
             </div>
           </div>

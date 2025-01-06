@@ -50,7 +50,7 @@ export default function Home() {
     return () => clearInterval(timer)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const Submit = (e: React.FormEvent) => {
     e.preventDefault()
     setBotResponse(`You said: "${userInput}". As a unique chatbot, I'd respond with something witty and engaging here!`)
     setUserInput('')
