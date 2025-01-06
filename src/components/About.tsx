@@ -45,7 +45,7 @@ export default function GitHubProfileCards() {
     return (
 
       <div className="min-h-screen bg-black p-4 sm:p-8 md:p-12 lg:p-24 mt-48">
-        <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 font-akira">
+        <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 font-akira text-center">
           Meet the Developers
         </h1>
 
@@ -74,7 +74,7 @@ export default function GitHubProfileCards() {
 
   return (
     <div className=" bg-black p-4 sm:p-8 md:p-12 lg:p-24 min-h-screen mt-48 flex flex-col items-center justify-center">
-      <h1 className="text-4xl md:text-6xl lg:text-8xl text-white font-akira">Meet the Developers</h1>
+      <h1 className="text-4xl md:text-6xl lg:text-8xl text-white font-akira text-center">Meet the Developers</h1>
       <h2 className='font-akira text-zinc-500 tracking-wide text-3xl mb-12'>The real OGs</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 max-w-7xl w-full mt-12">
         {users.map((user) => (

@@ -21,7 +21,7 @@ export default function Home() {
           gradientFrom="#4A0E4E"
           gradientTo="#0A4A94"
         >
-          <p className="text-gray-400 text-justify font-sans text-xl">
+          <p className="text-gray-400 text-justify font-mono text-xl">
             Store and query engagement data effortlessly with DataStax Astra DB. 
             Our project uses a seamless backend to handle likes, shares, and comments 
             across diverse social media post types.
@@ -36,7 +36,7 @@ export default function Home() {
           gradientFrom="#3B0F50"
           gradientTo="#0B5FA5"
         >
-          <p className="text-gray-400 text-justify font-sans text-xl">
+          <p className="text-gray-400 text-justify font-mono text-xl">
             Dive into magical analytics with Langflow. Our custom workflow calculates 
             engagement metrics, helping you uncover which content types perform best—whether 
             it&apos;s reels, carousels, or static posts.
@@ -51,7 +51,7 @@ export default function Home() {
           gradientFrom="#2C1053"
           gradientTo="#0C74B6"
         >
-          <p className="text-gray-400 text-justify font-sans text-xl">
+          <p className="text-gray-400 text-justify font-mono text-xl">
             Witness the magic of GPT integration! Our system generates insightful 
             recommendations like &quot;Reels drive 2x more comments,&quot; empowering content creators 
             with data-driven decisions.
