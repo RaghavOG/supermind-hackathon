@@ -30,7 +30,7 @@ export default function Home() {
         
         {/* Card 2 */}
         <DarkMagicCard
-          heading="Analytics Enchantment"
+          heading="Analytics Enhancements"
           description="Langflow-powered workflow creation."
           className="w-full h-full"
           gradientFrom="#3B0F50"
