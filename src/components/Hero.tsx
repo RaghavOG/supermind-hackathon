@@ -12,7 +12,7 @@ export default function HeroSection() {
         <div className="w-full max-w-7xl mx-auto py-16 sm:py-20 lg:py-32"> {/* Adjusted padding for mobile */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="w-full lg:w-1/2 lg:pr-8">
-              <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 ">
+              <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6">
                 Social Media Analytics
               </h1>
               <h3 className="text-2xl sm:text-3xl lg:text-4xl text-white mb-4 lg:mb-6">

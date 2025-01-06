@@ -9,6 +9,7 @@ import Hero from '@/components/Hero'
 import Features from '@/components/features'
 import TechStack from "@/components/tech-stack"
 import About from "@/components/About"
+import { VelocityScroll } from '@/components/ui/scroll-based-velocity'
 
 const messages = [
   "Hello! I'm not your average chatbot.",
@@ -49,7 +50,7 @@ export default function Home() {
     return () => clearInterval(timer)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const Submit = (e: React.FormEvent) => {
     e.preventDefault()
     setBotResponse(`You said: "${userInput}". As a unique chatbot, I'd respond with something witty and engaging here!`)
     setUserInput('')
@@ -59,15 +60,18 @@ export default function Home() {
    
     <main className="min-h-screen bg-black text-gray-100">
        <Hero/>
+
        <Features/>
        <TechStack/>
+       <VelocityScroll className='py-16'> Growth  Reach  Performance  engagement </VelocityScroll>
+
        <About/>
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
 
 
-
-
+        
         <section className="text-center">
           <h2 className="text-4xl md:text-6xl lg:text-8xl  mb-8 ">
             Ready for the Full Experience?
