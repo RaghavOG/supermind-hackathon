@@ -43,10 +43,12 @@ export default function GitHubProfileCards() {
 
   if (loading) {
     return (
+
       <div className="min-h-screen bg-black p-4 sm:p-8 md:p-12 lg:p-24 mt-48">
-       <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 ">
-        Meet the Developers
-      </h1>
+        <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 font-akira">
+          Meet the Developers
+        </h1>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {[...Array(4)].map((_, index) => (
             <Card key={index} className="w-full bg-gray-900 border-2 border-purple-500 shadow-[0_0_15px_rgba(147,51,234,0.5)]">
@@ -71,9 +73,9 @@ export default function GitHubProfileCards() {
   }
 
   return (
-    <div className=" bg-black p-4 sm:p-8 md:p-12 lg:p-24 min-h-screen mt-48 flex flex-col  justify-center">
-      <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6 ">Meet the Developers</h1>
-      <h2 className='text-3xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4 lg:mb-6 '>The Real OGs</h2>
+    <div className=" bg-black p-4 sm:p-8 md:p-12 lg:p-24 min-h-screen mt-48 flex flex-col items-center justify-center">
+      <h1 className="text-4xl md:text-6xl lg:text-8xl text-white font-akira">Meet the Developers</h1>
+      <h2 className='font-akira text-zinc-500 tracking-wide text-3xl mb-12'>The real OGs</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-16 max-w-7xl w-full mt-12">
         {users.map((user) => (
           <Card key={user.login} className="w-full bg-black border shadow-[0_0_15px_rgba(147,51,234,0.5)] transition-all duration-300 hover:shadow-[0_0_25px_rgba(147,51,234,0.8)]">

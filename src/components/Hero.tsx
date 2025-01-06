@@ -12,10 +12,11 @@ export default function HeroSection() {
         <div className="w-full max-w-8xl mx-auto py-16 sm:py-20 lg:py-32"> {/* Adjusted padding for mobile */}
           <div className="flex flex-col lg:flex-row items-center justify-around gap-12">
             <div className="w-full lg:w-1/2 lg:pr-8">
-              <h1 className="text-5xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 lg:mb-6">
+
+              <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-4 lg:mb-6 font-akira bg-gradient-to-br from-zinc-100  to-zinc-300 bg-clip-text text-transparent">
                 Social Media Analytics
               </h1>
-              <h3 className="text-2xl sm:text-lg lg:text-3xl text-zinc-200 mb-4 lg:mb-6 font-sans font-semibold">
+              <h3 className="text-2xl sm:text-3xl lg:text-3xl text-zinc-200 mb-4 lg:mb-6 font-sans font-semibold">
                 with Langflow and DataStax
               </h3>
               <p className="text-lg sm:text-lg lg:text-2xl font-sans text-zinc-200 mb-8 leading-snug">

@@ -26,7 +26,7 @@ export function formatMessage(content: string): React.ReactNode {
     if (trimmedLine.startsWith('* ')) {
       return (
         <li key={index} className="ml-4 mb-1 list-disc">
-          {cleanMarkdown(trimmedLine.slice(2))}
+          {cleanMarkdown(trimmedLine?.slice(2))}
         </li>
       );
     }

@@ -89,7 +89,7 @@ export function DarkMagicCard({
     >
       <div className="absolute inset-px z-10 rounded-xl bg-black" />
       <div className="relative z-30 flex flex-col min-h-[300px]">
-        <h2 className="mb-1 text-3xl font-bold  text-zinc-200">{heading}</h2>
+        <h2 className="mb-1 text-3xl font-bold font-akira text-zinc-200 ">{heading}</h2>
         <p className="mb-8 text-gray-300 text-xl font-normal font-sans">{description}</p>
         {children}
       </div>
