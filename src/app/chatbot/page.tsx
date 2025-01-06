@@ -250,7 +250,7 @@ const ChatComponent = () => {
       <header className="flex justify-between items-center px-4 py-2 border-b border-gray-800 bg-black">
         <div className="flex items-center gap-2">
           <Bot className="h-5 w-5 text-blue-400" />
-          <h2 className="text-base font-medium text-gray-200">Chat Assistant</h2>
+          <h2 className="text-sm md:text-lg font-medium text-gray-200">Chat Assistant</h2>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -283,7 +283,7 @@ const ChatComponent = () => {
             <h1 className="text-xl font-medium mb-2 text-gray-200">How can I help you today?</h1>
             <p className="text-sm text-gray-400">Ask me anything...</p>
 
-            <div className="mt-6 grid grid-cols-2 gap-2 w-full max-w-md">
+            <div className="mt-6 grid sm:grid-cols-2 gap-2 w-full max-w-md">
               {aiPrompts.map((prompt, index) => (
                 <Button
                   key={index}
@@ -292,7 +292,9 @@ const ChatComponent = () => {
                   onClick={() => setInput(prompt.action)}
                 >
                   <Sparkles className="h-3 w-3 mr-2 text-blue-400" />
-                  {prompt.text}
+                  <span className=''>
+                    {prompt.text}
+                    </span>
                 </Button>
               ))}
             </div>
