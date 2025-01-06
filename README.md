@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Social Media Analytics
 
-## Getting Started
+## Overview
+It is a comprehensive engagement analysis platform designed to provide insights into social media interaction patterns. By leveraging advanced tools like **DataStax Astra DB**, **Langflow**, and the **Groq API**, the platform offers seamless data storage, querying, and analytics to enhance user experience.
 
-First, run the development server:
+This project was developed by **Neural Nitwits**, a team of passionate developers:
+- Abhishek
+- Raghav
+- Anubhav
+- Anshul
 
+
+## Key Features
+- **Data Storage**:
+  - Utilizes **DataStax Astra DB** for efficient and scalable storage and querying of engagement data.
+  
+- **Integration Workflow**:
+  - Implements **Langflow** for streamlined integration of analytics workflows.
+
+- **Analytics API**:
+  - Powered by the **Groq - llama.3.1 8b instant**, providing robust querying capabilities for data insights.
+
+- **Dataset**:
+  - Supports importing and analyzing the provided `instagram_dataset.csv` for engagement insights.
+
+- **Custom Analytics**:
+  - Supports advanced querying and filtering options to customize data analysis.
+
+
+## Installation and Run
+Follow these steps to set up and run the project locally:
+
+### Prerequisites
+1. **DataStax Astra DB Account**:
+   - Create an account on [DataStax Astra DB](https://www.datastax.com/astra).
+   - Set up a new database and note the credentials.
+   - Upload the `instagram_dataset.csv` from the repository to your database.
+
+2. **API Keys**:
+   - Obtain a **Groq API Key** by signing up at [Groq](https://groq.com).
+   - Note the **Langflow API Token** for integration.
+
+3. **Node.js & npm**:
+   - Ensure you have [Node.js](https://nodejs.org/) installed on your system.
+
+4. **Next.js**:
+   - Set up Next.js for the frontend.
+
+### Steps to Run
+
+#### Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ git clone https://github.com/RaghavOG/supermind-hackathon.git
+$ cd supermind-hackathon
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Set Up Astra DB
+1. Log in to your Astra DB account.
+2. Create a database and upload the `instagram_dataset.csv`.
+3. Note the **Astra DB API Endpoint** and **Application Token**, and add them to your environment variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Configure Environment Variables
+Create a `.env` file in the root folder and add the following:
+```
+LANGFLOW_API_TOKEN=""
+ABHISHEK_ASTRA_DB_API_ENDPOINT=""
+ABHISHEK_ASTRA_DB_APPLICATION_TOKEN=""
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Install Dependencies
+```bash
+$ npm install
+```
 
-## Learn More
+#### Run the Application
+```bash
+$ npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Langflow Integration
+1. Use the Langflow interface to design and test workflows.
+2. Integrate the workflows into the application using the Langflow API.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+**Contact**: For questions or support, contact [RaghavOG](https://github.com/RaghavOG).
