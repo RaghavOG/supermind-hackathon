@@ -49,7 +49,7 @@ export default function Navbar() {
           >
             <Link href="/" className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               {/* NeuralNitwits */}
-              <Image src="/NeuralNitwits_white.png" alt="NeuralNitwits" width={150} height={40} />
+              <Image src="/NeuralNitwits_White.png" alt="NeuralNitwits" width={150} height={40} />
             </Link>
           </motion.div>
 
