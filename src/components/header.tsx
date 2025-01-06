@@ -48,7 +48,6 @@ export default function Navbar() {
             className="text-3xl font-bold"
           >
             <Link href="/" className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              {/* NeuralNitwits */}
               <Image src="/NeuralNitwits_White.png" alt="NeuralNitwits" width={150} height={40} />
             </Link>
           </motion.div>
@@ -60,23 +59,34 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and Time */}
+          <div className="flex items-center md:hidden">
+            {/* Time (centered on small screens) */}
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-lg text-zinc-400 absolute left-1/2 transform -translate-x-1/2"
+            >
+              {time}
+            </motion.div>
+
+            {/* Mobile menu button (right-aligned on small screens) */}
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-purple-400 focus:outline-none focus:text-purple-400 transition-colors duration-200"
+              className="text-white hover:text-purple-400 focus:outline-none focus:text-purple-400 transition-colors duration-200 ml-auto"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </motion.button>
           </div>
 
-          {/* Time */}
+          {/* Time (visible only on medium and larger screens) */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-lg text-zinc-400"
+            className="hidden md:block text-lg text-zinc-400"
           >
             {time}
           </motion.div>
