@@ -37,7 +37,9 @@ export default function Navbar() {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black w-full">
+
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black w-full ">
+
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -48,7 +50,8 @@ export default function Navbar() {
             className="text-3xl font-bold"
           >
             <Link href="/" className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              <Image src="/NeuralNitwits_White.png" alt="NeuralNitwits" width={150} height={40} />
+              {/* NeuralNitwits */}
+              <Image src="/NeuralNitwits_white.png" alt="NeuralNitwits" width={150} height={50} />
             </Link>
           </motion.div>
 
