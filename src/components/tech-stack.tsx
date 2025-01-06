@@ -9,19 +9,19 @@ import ShineBorder from "@/components/ui/shine-border"
 
 export default function OrbitingCirclesDemo() {
   return (
-    <div className="relative  bg-black p-4 sm:p-8 md:p-12 lg:p-24 flex justify-center items-center">
+    <div className="relative  bg-black p-4 sm:p-8 md:p-12 lg:p-24 flex justify-center items-center mt-20">
       <DotPattern className={cn("absolute inset-0 [mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",)}/>
       <div className="relative z-10 flex flex-col items-center justify-center w-full  ">
         <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-8">
           <div className="flex flex-col gap-4 w-full lg:w-1/2">
-            <h1 className="text-4xl md:text-6xl lg:text-8xl mb-8 text-gray-100">Tech Stack </h1>
+            <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-7xl mb-8 text-gray-100 font-akira">Tech Stack </h1>
             <ShineBorder className="w-full">
-              <p className="p-4 text-sm text-gray-300">
+              <p className="p-4 text-xl font-light text-gray-300">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet possimus incidunt commodi veniam beatae debitis nemo optio. Impedit illum eius
               </p>
             </ShineBorder>
             <ShineBorder className="w-full">
-              <p className="p-4 text-sm text-gray-300">
+              <p className="p-4 text-xl font-light text-gray-300">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet possimus incidunt commodi veniam beatae debitis nemo optio. Impedit illum eius
               </p>
             </ShineBorder>

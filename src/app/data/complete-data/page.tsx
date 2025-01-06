@@ -69,7 +69,7 @@ export default function EnhancedEngagementMetrics() {
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
     const endIndex = startIndex + ITEMS_PER_PAGE
-    return allData.slice(startIndex, endIndex)
+    return allData?.slice(startIndex, endIndex)
   }
 
   return (

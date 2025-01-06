@@ -9,6 +9,7 @@ import Hero from '@/components/Hero'
 import Features from '@/components/features'
 import TechStack from "@/components/tech-stack"
 import About from "@/components/About"
+import { VelocityScroll } from '@/components/ui/scroll-based-velocity'
 
 const messages = [
   "Hello! I'm not your average chatbot.",
@@ -57,24 +58,25 @@ export default function Home() {
 
   return (
    
-    <main className="min-h-screen bg-black text-gray-100">
+    <main className="min-h-screen bg-black text-gray-100 font-sans">
        <Hero/>
        <Features/>
        <TechStack/>
+
+       <VelocityScroll className='my-10 py-20 font-akira'> Growth  Reach  Performance  engagement </VelocityScroll>
+
        <About/>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-
-
-
-
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 min-h-svh flex justify-center items-center">
         <section className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-purple-400">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl  mb-8 font-akira">
             Ready for the Full Experience?
           </h2>
           <motion.a
             href="#"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-flex items-center"
+
+            className="bg-gradient-to-br from-slate-600 to-slate-800 hover:from-slate-700 hover:to-slate-900 text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 inline-flex items-center"
+
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

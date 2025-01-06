@@ -91,7 +91,12 @@ function ParallaxText({
     >
       <motion.div className="inline-block" style={{ x }}>
         {Array.from({ length: repetitions }).map((_, i) => (
-          <span key={i} ref={i === 0 ? textRef : null}>
+          <span className="bg-gradient-to-l
+from-zinc-400
+to-zinc-900
+bg-clip-text
+text-transparent
+" key={i} ref={i === 0 ? textRef : null}>
             {children}{" "}
           </span>
         ))}
@@ -101,7 +106,7 @@ function ParallaxText({
 }
 
 export function VelocityScroll({
-  defaultVelocity = 5,
+  defaultVelocity = 2,
   numRows = 2,
   children,
   className,
@@ -110,7 +115,7 @@ export function VelocityScroll({
   return (
     <div
       className={cn(
-        "relative w-full text-4xl font-bold tracking-[-0.02em] md:text-7xl md:leading-[5rem]",
+        "relative w-full text-6xl tracking-[-0.02em] md:text-9xl md:leading-[6rem] leading-[3rem]",
         className,
       )}
       {...props}
