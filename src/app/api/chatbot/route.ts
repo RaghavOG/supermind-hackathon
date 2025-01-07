@@ -51,7 +51,7 @@ class LangflowClient {
       }
 
       if (response.status === 429) {
-        throw new Error('API rate limit exceeded')
+        throw new Error('API Rate limit exceeded. Please wait a moment before trying again.')
       }
 
       throw new Error(`API error: ${response.status} - ${errorBody}`)
@@ -77,15 +77,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ response })
   } catch (error) {
     console.error('Error:', error)
-    if (error.message === 'API rate limit exceeded') {
-      return NextResponse.json(
-        { error: 'API rate limit exceeded. Please try again later.' },
-        { status: 429 }
-      )
-    }
     return NextResponse.json(
-      { error: 'Failed to process request' },
-      { status: 500 }
+      { error: error.message },
+      { status: error.message.includes('Rate limit') ? 429 : 500 }
     )
   }
 }

@@ -123,39 +123,40 @@ const ChatComponent = () => {
   }, [messages, searchQuery])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() && files.length === 0) return
-
+    e.preventDefault();
+    if (!input.trim() && files.length === 0) return;
+  
     // Create and add user message
     const newMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
       content: input,
       timestamp: Date.now(),
-      files: files.length > 0 ? files : undefined
-    }
-
-    setMessages(prev => [...prev, newMessage])
-    setInput('')
-    setFiles([])
-    setIsAnalyzing(true)
-
+      files: files.length > 0 ? files : undefined,
+    };
+  
+    setMessages((prev) => [...prev, newMessage]);
+    setInput('');
+    setFiles([]);
+    setIsAnalyzing(true);
+  
     try {
-      // Add and show the analyzing message for a consistent duration
-      const analyzingText = "Thinking... 🤔 , This might take a while"
-      await simulateTyping(analyzingText)
+      // Show "Analyzing" message
+      const analyzingText = 'Thinking... 🤔 This might take a while.';
+      await simulateTyping(analyzingText);
+  
       const analyzingMessage: Message = {
         id: `analyzing-${Date.now()}`,
         role: 'assistant',
         content: analyzingText,
-        timestamp: Date.now()
-      }
-
-      setMessages(prev => [...prev, analyzingMessage])
-      scrollToBottom()
-
-      // Simulate API call delay and keep "Analyzing" message visible
+        timestamp: Date.now(),
+      };
+  
+      setMessages((prev) => [...prev, analyzingMessage]);
+      scrollToBottom();
+  
       try {
+        // Send API request
         const response = await fetch('/api/chatbot', {
           method: 'POST',
           headers: {
@@ -163,62 +164,67 @@ const ChatComponent = () => {
           },
           body: JSON.stringify({ message: input }),
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to get response');
-        }
-
+  
+        // Process API response
         const data = await response.json();
-
-        // console.log(data)
-
-        // Remove analyzing message before showing the response
-        setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
-
-        // Show the response with typing effect
-        const typedResponse = await simulateTyping(data.response)
-
+  
+        // Remove "Analyzing" message
+        setMessages((prev) => prev.filter((msg) => msg.id !== analyzingMessage.id));
+  
+        if (response.status === 429) {
+          const rateLimitMessage = 'API Rate Limit exceeded. Please try again later.';
+          const typedRateLimitMessage = await simulateTyping(rateLimitMessage);
+  
+          const errorResponseMessage: Message = {
+            id: Date.now().toString(),
+            role: 'assistant',
+            content: typedRateLimitMessage,
+            timestamp: Date.now(),
+          };
+  
+          setMessages((prev) => [...prev, errorResponseMessage]);
+          return;
+        }
+  
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to get a response.');
+        }
+  
+        const typedResponse = await simulateTyping(data.response);
+  
         const responseMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: typedResponse,
-          timestamp: Date.now()
-        }
-
-        setMessages(prev => [...prev, responseMessage])
-
+          timestamp: Date.now(),
+        };
+  
+        setMessages((prev) => [...prev, responseMessage]);
       } catch (error) {
-        console.error('Error:', error)
-
-        // Remove analyzing message before showing error
-        setMessages(prev => prev.filter(msg => msg.id !== analyzingMessage.id))
-
-        let errorText = 'Sorry, I encountered an error. Please try again.'
-
-      if (error.message === 'API rate limit exceeded. Please try again later.') {
-        errorText = 'API rate limit exceeded. Please try again later.'
-      }
-
-
-        const typedError = await simulateTyping(errorText)
-
+        console.error('Error:', error);
+  
+        // Remove "Analyzing" message
+        setMessages((prev) => prev.filter((msg) => msg.id !== analyzingMessage.id));
+  
+        const errorText = error.message || 'Sorry, I encountered an error. Please try again.';
+        const typedError = await simulateTyping(errorText);
+  
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
           content: typedError,
-          timestamp: Date.now()
-        }
-
-        setMessages(prev => [...prev, errorMessage])
+          timestamp: Date.now(),
+        };
+  
+        setMessages((prev) => [...prev, errorMessage]);
       }
-
     } finally {
-      setIsAnalyzing(false)
-      setIsTyping(false)
-      setTypingText('')
+      setIsAnalyzing(false);
+      setIsTyping(false);
+      setTypingText('');
     }
-  }
-
+  };
+  
 
 
   const clearChat = () => {
