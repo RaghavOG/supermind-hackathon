@@ -106,7 +106,7 @@ const ChatComponent = () => {
       setTypingText(currentText)
       scrollToBottom();
       // Random delay between 20-50ms for more natural typing
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 30 + 10))
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 20 + 10))
     }
 
     setIsTyping(false)

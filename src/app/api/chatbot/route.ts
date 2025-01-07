@@ -11,8 +11,8 @@ class LangflowClient {
   }
 
   async runFlow(input: string, retryCount: number = 1): Promise<string> {
-    const flowId = '133c96f9-1cce-46c0-8659-6e1d3213376f'
-    const langflowId = '7e18e1b3-1994-410f-a79b-02650cb8b0fd'
+    const flowId = process.env.LANGFLOW_FLOW_ID! 
+    const langflowId = process.env.LANGFLOW_LANGFLOW_ID!
     const endpoint = `/lf/${langflowId}/api/v1/run/${flowId}`
 
     const response = await fetch(`${this.baseURL}${endpoint}`, {
