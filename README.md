@@ -62,9 +62,11 @@ $ cd supermind-hackathon
 #### Configure Environment Variables
 Create a `.env` file in the root folder and add the following:
 ```
-LANGFLOW_API_TOKEN=""
-ABHISHEK_ASTRA_DB_API_ENDPOINT=""
-ABHISHEK_ASTRA_DB_APPLICATION_TOKEN=""
+ASTRA_DB_API_ENDPOINT=
+ASTRA_DB_APPLICATION_TOKEN=
+LANGFLOW_FLOW_ID=
+LANGFLOW_LANGFLOW_ID=
+LANGFLOW_API_TOKEN=
 ```
 
 #### Install Dependencies
