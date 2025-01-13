@@ -24,7 +24,7 @@ export async function GET() {
   const database = connectToDatabase();
 
   try {
-    const collection = database.collection("sm_posts");
+    const collection = database.collection(process.env.ASTRA_DB_KEYSPACE);
 
     const data = await collection.find({}).limit(1000).toArray();
     console.log(`Fetched ${data.length} documents from Astra DB`);
